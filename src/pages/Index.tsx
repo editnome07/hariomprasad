@@ -196,7 +196,7 @@ const Index = () => {
                 <div className="absolute -inset-4 bg-gradient-to-br from-primary/30 to-transparent rounded-2xl blur-2xl" />
                 <div className="relative h-full rounded-2xl overflow-hidden border-2 border-primary/30 animate-pulse-glow">
                   <img
-                    src="assets/hariom.png"
+                    src="/assets/hariom.png"
                     alt="Hariom - Professional video editor"
                     className="w-full h-full object-cover"
                   />
