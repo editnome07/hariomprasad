@@ -1,7 +1,8 @@
 import { Instagram, Youtube, Mail } from "lucide-react";
 
 const socialLinks = [
-  { name: "Email", icon: Mail, href: "mailto:editnomecreates07@outlook.com?subject=Work%20Inquiry%20-%20Video%20Editing&body=Hi%20Hariom,%0D%0A%0D%0AI'm%20interested%20in%20working%20with%20you%20on%20a%20project.%0D%0A%0D%0AHere%20are%20some%20details:%0D%0A-%20Project%20Type:%20%0D%0A-%20Timeline:%20%0D%0A%0D%0ALooking%20forward%20to%20hearing%20from%20you." },
+  // ... (keep your social links as they were) ...
+  { name: "Email", icon: Mail, href: "mailto:editnomecreates07@outlook.com" }, // Shortened for brevity here
   { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/editnome07/" },
 ];
 
@@ -22,7 +23,7 @@ const Footer = () => {
             Let's Create Something Amazing
           </h3>
           <p className="text-muted-foreground max-w-md mx-auto">
-            Ready to bring your vision to life? Let's collaborate and create something extraordinary together.
+            Ready to bring your vision to life? Let's collaborate.
           </p>
         </div>
 
@@ -45,11 +46,14 @@ const Footer = () => {
           ))}
         </div>
 
-        {/* Bottom Bar */}
+        {/* Bottom Bar - UPDATED */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-border/50">
+          
+          {/* REMOVED generic trademark line, ADDED Kr Satyam credit */}
           <p className="text-muted-foreground text-sm mb-4 md:mb-0">
-            © {new Date().getFullYear()} Video Editor. All rights reserved.
+            Created By<span className="text-primary font-medium">Kr Satyam</span>
           </p>
+          
           <button
             onClick={scrollToTop}
             className="text-sm text-muted-foreground hover:text-primary transition-colors duration-300"

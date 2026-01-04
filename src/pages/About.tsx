@@ -49,8 +49,8 @@ const About = () => {
                 {/* Image Container */}
                 <div className="relative h-full rounded-2xl overflow-hidden border-2 border-primary/30 animate-pulse-glow">
                   <img
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80"
-                    alt="Professional video editor portrait"
+                    src="/assets/hariom.png"
+                    alt="Hariom - Professional video editor"
                     className="w-full h-full object-cover"
                   />
                   

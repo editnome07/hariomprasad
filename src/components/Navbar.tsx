@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, FileText } from "lucide-react"; // Added FileText icon
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -18,7 +18,6 @@ const Navbar = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
 
-      // Simple active section detection
       const sections = navLinks.map(link => link.href.substring(1));
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -73,6 +72,17 @@ const Navbar = () => {
                 </a>
               );
             })}
+            
+            {/* ADDED: Resume Button */}
+            <a
+              href="/resume.pdf" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary border border-primary/50 rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+            >
+              <FileText size={16} />
+              Resume
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -89,7 +99,7 @@ const Navbar = () => {
         <div
           className={cn(
             "md:hidden overflow-hidden transition-all duration-300",
-            isMobileMenuOpen ? "max-h-64 opacity-100 mt-4" : "max-h-0 opacity-0"
+            isMobileMenuOpen ? "max-h-80 opacity-100 mt-4" : "max-h-0 opacity-0"
           )}
         >
           <div className="flex flex-col gap-4 py-4 border-t border-border/50">
@@ -111,6 +121,17 @@ const Navbar = () => {
                 </a>
                );
             })}
+            
+            {/* ADDED: Mobile Resume Link */}
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-lg tracking-wide text-primary flex items-center gap-2"
+            >
+              <FileText size={18} />
+              View Resume
+            </a>
           </div>
         </div>
       </div>
