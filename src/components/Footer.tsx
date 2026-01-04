@@ -51,7 +51,7 @@ const Footer = () => {
           
           {/* REMOVED generic trademark line, ADDED Kr Satyam credit */}
           <p className="text-muted-foreground text-sm mb-4 md:mb-0">
-            Created By<span className="text-primary font-medium">Kr Satyam</span>
+            Created By<span className="text-primary font-medium"> KaizenBreach</span>
           </p>
           
           <button
