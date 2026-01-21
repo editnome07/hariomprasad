@@ -1,9 +1,20 @@
 import { Instagram, Youtube, Mail } from "lucide-react";
 
+// Prefilled Mail Config for Footer
+const mailSubject = encodeURIComponent("Quick Inquiry: Video Editing");
+const mailBody = encodeURIComponent("Hi Hariom,\n\nI'm interested in your services. Can we discuss a potential project?\n\nBest regards,");
+
 const socialLinks = [
-  // ... (keep your social links as they were) ...
-  { name: "Email", icon: Mail, href: "mailto:editnomecreates07@outlook.com" }, // Shortened for brevity here
-  { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/editnome07/" },
+  { 
+    name: "Email", 
+    icon: Mail, 
+    href: `mailto:editnomecreates07@outlook.com?subject=${mailSubject}&body=${mailBody}` 
+  },
+  { 
+    name: "Instagram", 
+    icon: Instagram, 
+    href: "https://www.instagram.com/editnome07/" 
+  },
 ];
 
 const Footer = () => {
@@ -46,12 +57,18 @@ const Footer = () => {
           ))}
         </div>
 
-        {/* Bottom Bar - UPDATED */}
+        {/* Bottom Bar - UPDATED with @kaizenbreach Link */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-border/50">
-          
-          {/* REMOVED generic trademark line, ADDED Kr Satyam credit */}
           <p className="text-muted-foreground text-sm mb-4 md:mb-0">
-            Created By<span className="text-primary font-medium"> KaizenBreach</span>
+            Created By
+            <a 
+              href="https://www.instagram.com/kaizenbreach/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-primary font-medium hover:underline transition-all ml-1"
+            >
+              Kr Satyam
+            </a>
           </p>
           
           <button

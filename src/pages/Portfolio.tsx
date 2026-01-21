@@ -7,70 +7,64 @@ import { cn } from "@/lib/utils";
 
 const categories = [
   "All",
-  "Reels",
-  "Cinematic",
-  "Commercials",
-  "YouTube",
-  "Social Media",
+  "Mixed Media",
+  "Motion Graphics",
+  "Rhythmic Editing",
+  "Podcast Visualization",
+  "Business",
 ];
 
 const projects = [
   {
     id: 1,
-    title: "Urban Night Dreams",
-    category: "Cinematic",
-    thumbnail: "https://images.unsplash.com/photo-1536240478700-b869070f9279?w=800&q=80",
-    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    title: "Kinetic Manifesto: The Broader Life",
+    category: "Mixed Media",
+    thumbnail: "/assets/thumbnails/jobs_mac.jpg", // Frame 00:00 (Retro Mac)
+    videoUrl: "/assets/videos/main sfx sequence-.mp4",
+    description: "A high-energy inspirational sequence blending retro aesthetics with modern kinetic typography...",
+    roles: ["Mixed Media", "Typography", "Sound Design"],
+    bgClass: "bg-jobs-kinetic" // New property for background animation
   },
   {
     id: 2,
-    title: "Brand Story - Fashion Week",
-    category: "Commercials",
-    thumbnail: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&q=80",
-    videoUrl: "https://vimeo.com/347119375",
+    title: "Retention Mechanics: The Art of the Hook",
+    category: "Motion Graphics",
+    thumbnail: "/assets/thumbnails/iman_hook.jpg", // Frame 00:09
+    videoUrl: "/assets/videos/Iman Gadhi -0.2.mp4",
+    description: "A masterclass in retention-focused editing designed for social media growth...",
+    roles: ["Motion Graphics", "Object Tracking", "Retention Strategy"],
+    bgClass: "bg-iman-orbital"
   },
   {
     id: 3,
-    title: "Fitness Motivation Reel",
-    category: "Reels",
-    thumbnail: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80",
-    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    title: "Grayscale Collage: The Builder’s Legacy",
+    category: "Rhythmic Editing",
+    thumbnail: "/assets/thumbnails/gates_legacy.jpg", // Frame 00:06 (B&W Texture)
+    videoUrl: "/assets/videos/metro media sfx-.mp4",
+    description: "An atmospheric, documentary-style short featuring a gritty metro aesthetic...",
+    roles: ["Rhythmic Editing", "Texture Design", "Color Grading"],
+    bgClass: "bg-gates-grain"
   },
   {
     id: 4,
-    title: "Tech Product Launch",
-    category: "YouTube",
-    thumbnail: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80",
-    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    title: "Visualized Audio: The Longevity Protocol",
+    category: "Podcast Visualization",
+    thumbnail: "/assets/thumbnails/huberman_protocol.jpg", // Frame 00:06
+    videoUrl: "/assets/videos/GETTING OLDER IS THE BEST.mp4",
+    description: "A seamless visualization of long-form audio into short-form content...",
+    roles: ["VFX", "3D Elements", "Illustrative Storytelling"],
+    bgClass: "bg-huberman-pulse"
   },
   {
     id: 5,
-    title: "Restaurant Social Campaign",
-    category: "Social Media",
-    thumbnail: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
-    videoUrl: "https://vimeo.com/347119375",
-  },
-  {
-    id: 6,
-    title: "Wedding Highlights",
-    category: "Cinematic",
-    thumbnail: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",
-    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-  },
-  {
-    id: 7,
-    title: "Travel Vlog Intro",
-    category: "YouTube",
-    thumbnail: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80",
-    videoUrl: "https://vimeo.com/347119375",
-  },
-  {
-    id: 8,
-    title: "Dance Performance Reel",
-    category: "Reels",
-    thumbnail: "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=800&q=80",
-    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-  },
+    title: "Digital Presence: The Awareness Engine",
+    category: "Business",
+    thumbnail: "/assets/thumbnails/branding_awareness.jpg", // Frame 00:16
+    videoUrl: "/assets/videos/Building a Business.mp4",
+    description: "A polished, business-focused edit that visualizes the intangible value of SEO...",
+    roles: ["Motion Design", "3D Modeling", "Corporate Branding"],
+    bgClass: "bg-branding-neon"
+  }
 ];
 
 const Portfolio = () => {
@@ -85,26 +79,18 @@ const Portfolio = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-
-      {/* Hero Section */}
       <section className="pt-32 pb-16 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
-        
         <div className="relative container mx-auto px-6 text-center">
           <p className="text-primary text-sm tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in">
-            My Work
+            Gallery
           </p>
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold mb-6 opacity-0 animate-fade-in animation-delay-200">
             Portfolio
           </h1>
-          <p className="text-muted-foreground max-w-xl mx-auto opacity-0 animate-fade-in animation-delay-300">
-            A collection of my best video editing work across various genres and styles.
-            Each project tells a unique story.
-          </p>
         </div>
       </section>
 
-      {/* Filter Section */}
       <section className="pb-8">
         <div className="container mx-auto px-6">
           <div className="flex flex-wrap justify-center gap-3 opacity-0 animate-fade-in animation-delay-400">
@@ -115,8 +101,8 @@ const Portfolio = () => {
                 className={cn(
                   "px-5 py-2 text-sm font-medium rounded-full border transition-all duration-300",
                   activeCategory === category
-                    ? "bg-primary text-primary-foreground border-primary glow-crimson-subtle"
-                    : "bg-transparent text-muted-foreground border-border hover:border-primary hover:text-primary"
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-transparent text-muted-foreground border-border hover:border-primary"
                 )}
               >
                 {category}
@@ -126,7 +112,6 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Projects Grid */}
       <section className="py-12 pb-24">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -136,28 +121,24 @@ const Portfolio = () => {
                 title={project.title}
                 category={project.category}
                 thumbnail={project.thumbnail}
+                videoUrl={project.videoUrl} // Passes the MP4 URL for preview
                 onClick={() => setSelectedProject(project)}
                 index={index}
               />
             ))}
           </div>
-
-          {filteredProjects.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-muted-foreground">No projects found in this category.</p>
-            </div>
-          )}
         </div>
       </section>
 
-      {/* Video Modal */}
       <VideoModal
         isOpen={!!selectedProject}
         onClose={() => setSelectedProject(null)}
         videoUrl={selectedProject?.videoUrl || ""}
         title={selectedProject?.title || ""}
+        description={selectedProject?.description}
+        category={selectedProject?.category}
+        roles={selectedProject?.roles}
       />
-
       <Footer />
     </div>
   );
