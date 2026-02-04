@@ -1,28 +1,38 @@
 import { useEffect, useRef } from "react";
-import { X, Wrench } from "lucide-react"; // Removed Volume2 and Share2
-import { cn } from "@/lib/utils";
+import { X, Wrench } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 interface VideoModalProps {
   isOpen: boolean;
   onClose: () => void;
   videoUrl: string;
+  embedCode?: string;
   title: string;
   description?: string;
   category?: string;
   roles?: string[];
 }
 
-const VideoModal = ({ isOpen, onClose, videoUrl, title, description, category, roles }: VideoModalProps) => {
+const VideoModal = ({ isOpen, onClose, videoUrl, embedCode, title, description, category, roles }: VideoModalProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const isEmbed = !!embedCode || videoUrl.trim().startsWith("<blockquote") || videoUrl.includes("instagram-media");
+  const finalEmbedCode = embedCode || (isEmbed ? videoUrl : "");
+
   useEffect(() => {
-    if (isOpen && videoRef.current) {
-      videoRef.current.muted = false;
-      videoRef.current.play().catch(e => console.log("Playback blocked:", e));
+    if (isOpen) {
+      if (!isEmbed && videoRef.current) {
+        videoRef.current.muted = false;
+        videoRef.current.play().catch(e => console.log("Playback blocked:", e));
+      } else if (isEmbed && window.instgrm) {
+        setTimeout(() => {
+          window.instgrm?.Embeds.process();
+        }, 100);
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, isEmbed, videoUrl]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -39,36 +49,50 @@ const VideoModal = ({ isOpen, onClose, videoUrl, title, description, category, r
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-6 animate-fade-in">
+    // UPDATED: Added overflow-y-auto to parent to prevent clipping on very small screens
+    // UPDATED: z-index ensures it is above navbar
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-6 animate-fade-in overflow-y-auto">
       <div className="absolute inset-0 bg-black/95 backdrop-blur-xl" onClick={onClose} />
       
-      <div className="relative w-full max-w-5xl h-full md:h-[90vh] bg-neutral-950 border-0 md:border md:border-white/10 rounded-none md:rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
+      {/* UPDATED: Changed h-full to max-h to prevent cutting off on desktop */}
+      <div className="relative w-full max-w-5xl h-full md:h-auto md:max-h-[90vh] bg-neutral-950 border-0 md:border md:border-white/10 rounded-none md:rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
         
-        {/* Fixed Video Section */}
-        <div className="relative w-full md:w-[45%] bg-black flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10 shrink-0">
-          <div className="absolute top-4 right-4 z-50 md:hidden">
-            <button onClick={onClose} className="p-2 bg-black/50 rounded-full text-white"><X size={24} /></button>
+        {/* Media Section */}
+        <div className={cn(
+          "relative w-full md:w-[45%] bg-black flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10 shrink-0 min-h-[40vh]",
+          isEmbed ? "overflow-y-auto overflow-x-hidden" : "overflow-hidden"
+        )}>
+          {/* UPDATED: Moved Mobile Close button down to top-8 to avoid status bar clipping */}
+          <div className="absolute top-8 right-6 z-50 md:hidden">
+            <button onClick={onClose} className="p-2 bg-black/50 rounded-full text-white backdrop-blur-md border border-white/10"><X size={24} /></button>
           </div>
           
-          <video 
-            ref={videoRef}
-            src={videoUrl} 
-            className="h-full w-full object-contain" 
-            controls 
-            playsInline
-          />
+          {isEmbed ? (
+             <div 
+               className="w-full h-full flex items-center justify-center p-4"
+               dangerouslySetInnerHTML={{ __html: finalEmbedCode }} 
+             />
+          ) : (
+            <video 
+              ref={videoRef}
+              src={videoUrl} 
+              className="h-full w-full object-contain" 
+              controls 
+              playsInline
+            />
+          )}
         </div>
 
         {/* Scrollable Content Section */}
         <div className="flex-1 flex flex-col min-h-0 bg-neutral-900/50">
           <div className="hidden md:flex items-center justify-between p-6 border-b border-white/10">
-            <h2 className="font-display text-xl font-bold">{title}</h2>
-            <button onClick={onClose} className="hover:text-primary transition-colors"><X size={24} /></button>
+            <h2 className="font-display text-xl font-bold pr-4">{title}</h2>
+            <button onClick={onClose} className="hover:text-primary transition-colors p-1"><X size={24} /></button>
           </div>
 
           <ScrollArea className="flex-1 p-6 md:p-10">
             <div className="space-y-8 pb-10">
-              <div className="md:hidden">
+              <div className="md:hidden mt-4">
                 <h2 className="font-display text-2xl font-bold mb-2">{title}</h2>
               </div>
 

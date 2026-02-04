@@ -1,7 +1,19 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Cpu, HardDrive, Monitor, Zap, Quote, Mail } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { 
+  Cpu, 
+  HardDrive, 
+  Monitor, 
+  Zap, 
+  Quote, 
+  Mail, 
+  Video, 
+  Layers, 
+  Palette, 
+  Wand2, 
+  Aperture, 
+  MonitorPlay 
+} from "lucide-react";
 import { 
   Carousel, 
   CarouselContent, 
@@ -12,13 +24,14 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const skills = [
-  { name: "Premiere Pro", level: 95 },
-  { name: "After Effects", level: 90 },
-  { name: "DaVinci Resolve", level: 85 },
-  { name: "Final Cut Pro", level: 80 },
-  { name: "Motion Graphics", level: 85 },
-  { name: "Color Grading", level: 90 },
+// CHANGED: Replaced Percentage Levels with Icon/Category approach
+const skillsList = [
+  { name: "Premiere Pro", icon: Video },
+  { name: "After Effects", icon: Layers },
+  { name: "DaVinci Resolve", icon: Palette },
+  { name: "Final Cut Pro", icon: Aperture },
+  { name: "Motion Graphics", icon: MonitorPlay },
+  { name: "Color Grading", icon: Wand2 },
 ];
 
 const hardware = [
@@ -47,7 +60,6 @@ const testimonials = [
 ];
 
 const About = () => {
-  // Prefilled Mail Link for About page
   const mailSubject = encodeURIComponent("Collaboration Inquiry: Creative Project");
   const mailBody = encodeURIComponent("Hi Hariom,\n\nI was reading your about page and was impressed by your workflow. I'd love to chat about a project I have in mind.\n\nBest,");
   const mailLink = `mailto:editnomecreates07@outlook.com?subject=${mailSubject}&body=${mailBody}`;
@@ -73,8 +85,13 @@ const About = () => {
       <section className="py-12">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            {/* Profile Image */}
-            <div className="relative opacity-0 animate-slide-in-left sticky top-24">
+            
+            {/* 
+               CHANGED: Profile Image 
+               Fixed Issue 1: Removed 'sticky' for mobile. added 'lg:sticky'.
+               Now on mobile it flows normally, on Desktop it stays pinned.
+            */}
+            <div className="relative opacity-0 animate-slide-in-left lg:sticky lg:top-24">
               <div className="relative aspect-[4/5] max-w-md mx-auto">
                 <div className="absolute -inset-4 bg-gradient-to-br from-primary/30 to-transparent rounded-2xl blur-2xl" />
                 <div className="relative h-full rounded-2xl overflow-hidden border-2 border-primary/30 animate-pulse-glow">
@@ -112,26 +129,26 @@ const About = () => {
                 </a>
               </div>
 
-              {/* Skills Bars */}
+              {/* 
+                 CHANGED: Skills Section 
+                 Fixed Issue 2: Removed percentage bars, replaced with Icon Boxes
+              */}
               <div>
                  <h3 className="font-display text-2xl font-semibold mb-6 flex items-center gap-2">
                     <span className="w-8 h-[2px] bg-primary"></span>
                     Software Proficiency
                  </h3>
-                 <div className="space-y-6">
-                    {skills.map((skill, index) => (
-                    <div key={skill.name}>
-                        <div className="flex justify-between items-center mb-2">
+                 <div className="grid grid-cols-2 gap-4">
+                    {skillsList.map((skill) => (
+                      <div 
+                        key={skill.name} 
+                        className="flex items-center gap-3 p-4 rounded-xl bg-secondary/50 border border-border hover:border-primary/50 hover:bg-secondary transition-all duration-300 group"
+                      >
+                        <div className="p-2 rounded-lg bg-background text-primary group-hover:text-white group-hover:bg-primary transition-colors">
+                           <skill.icon size={20} />
+                        </div>
                         <span className="font-medium text-foreground">{skill.name}</span>
-                        <span className="text-sm text-muted-foreground">{skill.level}%</span>
-                        </div>
-                        <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                        <div
-                            className="h-full bg-gradient-to-r from-primary to-crimson-glow rounded-full transition-all duration-1000 ease-out"
-                            style={{ width: `${skill.level}%` }}
-                        />
-                        </div>
-                    </div>
+                      </div>
                     ))}
                 </div>
               </div>
