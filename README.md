@@ -25,13 +25,6 @@ Trained through the **“Just Not Video Editing Cohort” by Tharun Speaks**, ga
 ## 🎥 Core Video Editing Skills
 
 <p align="center">
-  <img src="https://cdn.simpleicons.org/adobepremierepro/ffffff" height="48"/>
-  <img src="https://cdn.simpleicons.org/adobeaftereffects/ffffff" height="48"/>
-  <img src="https://cdn.simpleicons.org/adobephotoshop/ffffff" height="48"/>
-  <img src="https://cdn.simpleicons.org/adobemediaencoder/ffffff" height="48"/>
-</p>
-
-<p align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&pause=1200&color=DC2626&center=true&vCenter=true&width=700&lines=Premiere+Pro.;After+Effects.;Motion+Graphics.;Color+Grading." />
 </p>
 
@@ -48,7 +41,8 @@ Trained through the **“Just Not Video Editing Cohort” by Tharun Speaks**, ga
 - Video Cutting & Sequencing  
 - Short-Form Content Editing (Reels / Shorts)  
 - Transitions & Effects  
-- Sound Design & Audio Cleanup  
+- Sound Design & Audio Cleanup
+- Colour Grading
 
 ### Creative Skills
 - Visual Storytelling  
@@ -64,37 +58,6 @@ Trained through the **“Just Not Video Editing Cohort” by Tharun Speaks**, ga
 - **L.M.T High School** — Secondary School (10th), 2020  
 - **L.M.T Intermediate College** — Senior Secondary (12th), 2022  
 - **Shivaji College, New Delhi** — BBA (Pursuing)  
-
----
-
-## 🎬 Training & Learning
-
-**Just Not Video Editing Cohort — Tharun Speaks**
-
-- Professional workflows using **Premiere Pro & After Effects**  
-- Storytelling, pacing, hooks, and transitions  
-- Practice-based edits inspired by real-world content  
-
----
-
-## 🧪 Practice Projects
-
-- Edited short-form videos focused on **engagement & retention**  
-- Created animated text, lower-thirds, and motion graphics  
-- Performed **basic color correction & audio cleanup**  
-
----
-
-## 🎯 Career Objective
-
-To start my career as a **Video Editor**, apply creative skills to real-world projects, and grow professionally while delivering engaging, high-quality digital content.
-
----
-
-## 🌍 Languages
-
-- English  
-- Hindi  
 
 ---
 
