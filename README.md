@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=26&pause=1400&color=DC2626&center=true&vCenter=true&width=900&lines=Hariom+-+Cinematic+Video+Editor+Portfolio;Visual+Storytelling+Through+Motion;Dark.+Moody.+Intentional." />
+  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=26&pause=1400&color=DC2626&center=true&vCenter=true&width=950&lines=Hariom+-+Cinematic+Video+Editor+Portfolio;Visual+Storytelling+Through+Motion;Dark.+Moody.+Intentional." />
 </p>
 
 <h2 align="center">🎬 Cinematic Video Editor Portfolio</h2>
@@ -9,53 +9,62 @@ A high-performance, visually immersive portfolio website crafted for professiona
 </p>
 
 <p align="center">
-  <img src="public/assets/hariom.png" alt="Project Banner" />
+  <img src="https://img.shields.io/badge/Cinematic-Dark%20Theme-black?style=for-the-badge&color=000000" />
+  <img src="https://img.shields.io/badge/Performance-Vite-red?style=for-the-badge&color=DC2626" />
+  <img src="https://img.shields.io/badge/Focus-Visual%20Storytelling-black?style=for-the-badge" />
 </p>
 
 ---
 
 ## ✨ Features
 
-- **Cinematic Dark Theme**  
-  Deep black surfaces with crimson accents inspired by modern film aesthetics.
+- 🎥 **Cinematic Dark Theme**  
+  Deep black surfaces with restrained crimson accents inspired by film-grade UI design.
 
-- **Smart Video Playback**  
-  - Hover autoplay for instant preview of local video assets  
-  - Hybrid modal system prioritizing local `.mp4` playback with optional Instagram linking
+- ▶️ **Smart Video Playback**  
+  - Hover autoplay using local `.mp4` files for instant preview  
+  - Hybrid modal system with optional Instagram redirection
 
-- **Before / After Color Grading Slider**  
-  Interactive comparison for Log vs Graded (Rec.709) footage.
+- 🌓 **Before / After Color Grading Slider**  
+  Interactive Log vs Graded (Rec.709) comparison for color workflow showcase.
 
-- **Responsive by Design**  
-  Optimized layouts for desktop, tablet, and mobile — including refined sticky scroll behavior.
+- 📱 **Fully Responsive**  
+  Optimized layouts across desktop, tablet, and mobile with refined scroll behavior.
 
-- **Instagram-Aware Embeds**  
-  Custom handling to preserve dark-theme consistency across embedded content.
-
-- **Performance First**  
-  Built using Vite for fast load times and smooth transitions.
+- ⚡ **Performance Optimized**  
+  Fast loads and smooth transitions powered by Vite.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Framework**: React (v18)
-- **Build Tool**: Vite
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **UI Components**: Shadcn UI (Radix Primitives)
-- **Icons**: Lucide React
-- **Animations**: Tailwind Animate + Custom CSS Keyframes
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react,ts,vite,tailwind" />
+</p>
+
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=css,html,git" />
+</p>
+
+- **Framework**: React 18  
+- **Language**: TypeScript  
+- **Build Tool**: Vite  
+- **Styling**: Tailwind CSS  
+- **UI System**: Shadcn UI (Radix Primitives)  
+- **Icons**: Lucide React  
+- **Animations**: Tailwind Animate + Custom CSS Keyframes  
 
 ---
 
 ## 🚀 Getting Started
 
-This project supports **Bun (recommended)** or **Node.js**.
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&pause=1200&color=DC2626&center=true&vCenter=true&width=700&lines=Fast+Setup.;Zero+Friction.;Editor+Ready." />
+</p>
 
 ### Prerequisites
 - Node.js v18+
-- Bun (optional — `bun.lockb` included)
+- Bun (optional — recommended)
 
 ### Installation
 
@@ -73,13 +82,13 @@ npm install
 ```
 
 ```bash
-# Start the dev server
+# Run development server
 bun dev
 # OR
 npm run dev
 ```
 
-Open your browser and visit:
+Open your browser and navigate to:
 `http://localhost:8080`
 
 ---
@@ -95,20 +104,24 @@ Hariom Portfolio/
 │   │   ├── ui/              # Shadcn UI primitives
 │   │   ├── VideoModal.tsx   # Video playback logic
 │   │   └── BeforeAfter.tsx  # Color grading slider
-│   ├── pages/               # Main routes (Home, About, Portfolio)
+│   ├── pages/               # Home, About, Portfolio
 │   ├── lib/                 # Utility helpers
-│   ├── App.tsx              # Router setup
+│   ├── App.tsx              # Router configuration
 │   └── index.css            # Global styles
-└── tailwind.config.ts       # Design system config
+└── tailwind.config.ts       # Design system
 ```
 
 ---
 
 ## ⚙️ Customization Guide
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Customizable-Projects-black?style=for-the-badge&color=000000" />
+</p>
+
 ### Adding New Projects
 
-Navigate to `src/pages/Index.tsx` or `src/pages/Portfolio.tsx` and extend the `projects` array:
+Edit `src/pages/Index.tsx` or `src/pages/Portfolio.tsx` and extend the `projects` array:
 
 ```ts
 {
@@ -118,19 +131,24 @@ Navigate to `src/pages/Index.tsx` or `src/pages/Portfolio.tsx` and extend the `p
   thumbnail: "/assets/thumbnails/new_thumb.jpg",
   videoUrl: "/assets/videos/new_video.mp4",
   embedCode: `<blockquote>...</blockquote>`,
-  description: "Project description here",
+  description: "Project description",
   roles: ["Editor", "Sound Design"],
   bgClass: "bg-branding-neon"
 }
 ```
 
-### Updating Assets
+### Asset Guidelines
 
-Place optimized `.mp4` videos and images inside `public/assets/`.
+* Use optimized `.mp4` files for previews
+* Place all assets inside `public/assets/`
 
 ---
 
 ## 👥 Credits
+
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&pause=1500&color=DC2626&center=true&vCenter=true&width=700&lines=Built+for+Creators.;Designed+Like+Cinema." />
+</p>
 
 ### **Owner / Creative Director**
 
@@ -153,3 +171,10 @@ Cybersecurity Enthusiast & Part-Time Web Developer
 ## 📄 License
 
 This project is open-source and available under the **MIT License**.
+
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=16&pause=2000&color=DC2626&center=true&vCenter=true&width=600&lines=Dark.+Focused.+Cinematic." />
+</p>
+
+
+Say the word.
