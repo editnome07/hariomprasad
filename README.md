@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=26&pause=1400&color=DC2626&center=true&vCenter=true&width=950&lines=Hariom+-+Cinematic+Video+Editor+Portfolio;Visual+Storytelling+Through+Motion;Dark.+Moody.+Intentional." />
+  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=26&pause=1400&color=DC2626&center=true&vCenter=true&width=950&lines=Hariom+Prasad+-+Cinematic+Video+Editor;Visual+Storytelling+Through+Motion;Dark.+Moody.+Intentional." />
 </p>
 
 <h2 align="center">🎬 Cinematic Video Editor Portfolio</h2>
@@ -9,162 +9,116 @@ A high-performance, visually immersive portfolio website crafted for professiona
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Cinematic-Dark%20Theme-black?style=for-the-badge&color=000000" />
-  <img src="https://img.shields.io/badge/Performance-Vite-red?style=for-the-badge&color=DC2626" />
-  <img src="https://img.shields.io/badge/Focus-Visual%20Storytelling-black?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Location-New%20Delhi-black?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Email-editnomecreates07@outlook.com-red?style=for-the-badge&color=DC2626" />
 </p>
 
 ---
 
-## ✨ Features
+## 🎞️ Professional Summary
 
-- 🎥 **Cinematic Dark Theme**  
-  Deep black surfaces with restrained crimson accents inspired by film-grade UI design.
-
-- ▶️ **Smart Video Playback**  
-  - Hover autoplay using local `.mp4` files for instant preview  
-  - Hybrid modal system with optional Instagram redirection
-
-- 🌓 **Before / After Color Grading Slider**  
-  Interactive Log vs Graded (Rec.709) comparison for color workflow showcase.
-
-- 📱 **Fully Responsive**  
-  Optimized layouts across desktop, tablet, and mobile with refined scroll behavior.
-
-- ⚡ **Performance Optimized**  
-  Fast loads and smooth transitions powered by Vite.
+Creative and motivated **Video Editor** with hands-on training in **Adobe Creative Suite** and a strong passion for **visual storytelling**.  
+Trained through the **“Just Not Video Editing Cohort” by Tharun Speaks**, gaining practical exposure to editing workflows, motion graphics, pacing, and sound design.
 
 ---
 
-## 🛠️ Tech Stack
+## 🎥 Core Video Editing Skills
 
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=react,ts,vite,tailwind" />
+  <img src="https://cdn.simpleicons.org/adobepremierepro/ffffff" height="48"/>
+  <img src="https://cdn.simpleicons.org/adobeaftereffects/ffffff" height="48"/>
+  <img src="https://cdn.simpleicons.org/adobephotoshop/ffffff" height="48"/>
+  <img src="https://cdn.simpleicons.org/adobemediaencoder/ffffff" height="48"/>
 </p>
 
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=css,html,git" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&pause=1200&color=DC2626&center=true&vCenter=true&width=700&lines=Premiere+Pro.;After+Effects.;Motion+Graphics.;Color+Grading." />
 </p>
 
-- **Framework**: React 18  
-- **Language**: TypeScript  
-- **Build Tool**: Vite  
-- **Styling**: Tailwind CSS  
-- **UI System**: Shadcn UI (Radix Primitives)  
-- **Icons**: Lucide React  
-- **Animations**: Tailwind Animate + Custom CSS Keyframes  
+- **Adobe Premiere Pro** – Professional editing & sequencing  
+- **Adobe After Effects** – Motion graphics & typography animation  
+- **Adobe Photoshop** – Thumbnail & visual asset creation  
+- **Adobe Media Encoder** – Export optimization & delivery  
 
 ---
 
-## 🚀 Getting Started
+## 🛠️ Technical & Creative Skillset
+
+### Editing & Post-Production
+- Video Cutting & Sequencing  
+- Short-Form Content Editing (Reels / Shorts)  
+- Transitions & Effects  
+- Sound Design & Audio Cleanup  
+
+### Creative Skills
+- Visual Storytelling  
+- Pacing & Hooks  
+- Attention to Detail  
+- Decision Making  
+- Time Management  
+
+---
+
+## 🎓 Education
+
+- **L.M.T High School** — Secondary School (10th), 2020  
+- **L.M.T Intermediate College** — Senior Secondary (12th), 2022  
+- **Shivaji College, New Delhi** — BBA (Pursuing)  
+
+---
+
+## 🎬 Training & Learning
+
+**Just Not Video Editing Cohort — Tharun Speaks**
+
+- Professional workflows using **Premiere Pro & After Effects**  
+- Storytelling, pacing, hooks, and transitions  
+- Practice-based edits inspired by real-world content  
+
+---
+
+## 🧪 Practice Projects
+
+- Edited short-form videos focused on **engagement & retention**  
+- Created animated text, lower-thirds, and motion graphics  
+- Performed **basic color correction & audio cleanup**  
+
+---
+
+## 🎯 Career Objective
+
+To start my career as a **Video Editor**, apply creative skills to real-world projects, and grow professionally while delivering engaging, high-quality digital content.
+
+---
+
+## 🌍 Languages
+
+- English  
+- Hindi  
+
+---
+
+## 🛠️ Website Tech Stack
 
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&pause=1200&color=DC2626&center=true&vCenter=true&width=700&lines=Fast+Setup.;Zero+Friction.;Editor+Ready." />
+  <img src="https://skillicons.dev/icons?i=react,ts,vite,tailwind,git" />
 </p>
-
-### Prerequisites
-- Node.js v18+
-- Bun (optional — recommended)
-
-### Installation
-
-```bash
-git clone https://github.com/editnome07/hariomprasad.git
-cd hariomprasad
-````
-
-```bash
-# Using Bun (Recommended)
-bun install
-
-# OR using npm
-npm install
-```
-
-```bash
-# Run development server
-bun dev
-# OR
-npm run dev
-```
-
-Open your browser and navigate to:
-`http://localhost:8080`
-
----
-
-## 📂 Project Structure
-
-```
-Hariom Portfolio/
-├── public/
-│   └── assets/              # Images, videos, thumbnails
-├── src/
-│   ├── components/          # Reusable UI components
-│   │   ├── ui/              # Shadcn UI primitives
-│   │   ├── VideoModal.tsx   # Video playback logic
-│   │   └── BeforeAfter.tsx  # Color grading slider
-│   ├── pages/               # Home, About, Portfolio
-│   ├── lib/                 # Utility helpers
-│   ├── App.tsx              # Router configuration
-│   └── index.css            # Global styles
-└── tailwind.config.ts       # Design system
-```
-
----
-
-## ⚙️ Customization Guide
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Customizable-Projects-black?style=for-the-badge&color=000000" />
-</p>
-
-### Adding New Projects
-
-Edit `src/pages/Index.tsx` or `src/pages/Portfolio.tsx` and extend the `projects` array:
-
-```ts
-{
-  id: 6,
-  title: "New Project Title",
-  category: "Commercial",
-  thumbnail: "/assets/thumbnails/new_thumb.jpg",
-  videoUrl: "/assets/videos/new_video.mp4",
-  embedCode: `<blockquote>...</blockquote>`,
-  description: "Project description",
-  roles: ["Editor", "Sound Design"],
-  bgClass: "bg-branding-neon"
-}
-```
-
-### Asset Guidelines
-
-* Use optimized `.mp4` files for previews
-* Place all assets inside `public/assets/`
 
 ---
 
 ## 👥 Credits
 
-<p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&pause=1500&color=DC2626&center=true&vCenter=true&width=700&lines=Built+for+Creators.;Designed+Like+Cinema." />
-</p>
-
-### **Owner / Creative Director**
-
-**Hariom**
-Professional Video Editor & Motion Graphics Artist
-
-* Instagram: [@editnome07](https://www.instagram.com/editnome07/)
-* Email: [editnomecreates07@outlook.com](mailto:editnomecreates07@outlook.com)
+### **Owner / Video Editor**
+**Hariom Prasad**  
+📍 New Delhi  
+📧 editnomecreates07@outlook.com  
+📸 Instagram: [@editnome07](https://www.instagram.com/editnome07/)
 
 ### **Developer / Designer**
-
-**Kr Satyam**
-Cybersecurity Enthusiast & Part-Time Web Developer
-
-* Instagram: [@kaizenbreach](https://www.instagram.com/kaizenbreach/)
-* GitHub: [github.com/krsatyam1607](https://github.com/krsatyam1607)
+**Kr Satyam**  
+Cybersecurity Enthusiast & Web Developer  
+- Instagram: [@kaizenbreach](https://www.instagram.com/kaizenbreach/)  
+- GitHub: [github.com/krsatyam1607](https://github.com/krsatyam1607)
 
 ---
 
@@ -173,8 +127,5 @@ Cybersecurity Enthusiast & Part-Time Web Developer
 This project is open-source and available under the **MIT License**.
 
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=16&pause=2000&color=DC2626&center=true&vCenter=true&width=600&lines=Dark.+Focused.+Cinematic." />
+  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=16&pause=2000&color=DC2626&center=true&vCenter=true&width=600&lines=Edit+with+Intent.;Design+with+Emotion.;Think+in+Frames." />
 </p>
-
-
-Say the word.
