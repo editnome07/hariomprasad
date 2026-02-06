@@ -72,9 +72,9 @@ Trained through the **“Just Not Video Editing Cohort” by Tharun Speaks**, ga
 
 ## 🎓 Education
 
-- **L.M.T High School** - Secondary School (10th), 2020  
-- **L.M.T Intermediate College** - Senior Secondary (12th), 2022  
-- **Shivaji College, New Delhi** - Bachelor of Business Administration (Pursuing)  
+- **L.M.T High School** — Secondary School (10th), 2020  
+- **L.M.T Intermediate College** — Senior Secondary (12th), 2022  
+- **Shivaji College, New Delhi** — Bachelor of Business Administration (Pursuing)  
 
 ---
 
