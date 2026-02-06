@@ -98,7 +98,7 @@ Trained through the **“Just Not Video Editing Cohort” by Tharun Speaks**, ga
 **Kr Satyam**  
 Cybersecurity Enthusiast & Web Developer  
 - Instagram: [@kaizenbreach](https://www.instagram.com/kaizenbreach/)  
-- GitHub: [github.com/krsatyam1607](https://github.com/krsatyam1607)
+- GitHub: [github.com/krsatyam11](https://github.com/krsatyam11)
 
 ---
 
