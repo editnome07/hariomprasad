@@ -1,6 +1,7 @@
-import { useRef, useState } from "react";
+import { useRef, useState, MouseEvent } from "react";
 import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
+import MagneticButton from "./MagneticButton";
 
 interface ProjectCardProps {
   title: string;
@@ -9,7 +10,7 @@ interface ProjectCardProps {
   thumbnail: string;
   onClick: () => void;
   index: number;
-  bgClass?: string; // For the section-specific background animations
+  bgClass?: string;
 }
 
 const ProjectCard = ({ 
@@ -22,50 +23,80 @@ const ProjectCard = ({
   bgClass 
 }: ProjectCardProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Check if it's a local file for the grid preview functionality
-  const isLocalVideo = videoUrl.toLowerCase().endsWith('.mp4') || videoUrl.toLowerCase().endsWith('.webm');
+  // Robust check for video files
+  const isLocalVideo = 
+    videoUrl && (
+    videoUrl.toLowerCase().includes('.mp4') || 
+    videoUrl.toLowerCase().includes('.webm') || 
+    videoUrl.toLowerCase().includes('.mov')
+    );
 
   const handleMouseEnter = () => {
     setIsHovered(true);
-    if (videoRef.current) {
-      videoRef.current.play().catch((error) => {
-        console.warn("Autoplay blocked or video not loaded:", error);
-      });
+    const video = videoRef.current;
+    if (video) {
+      // Browsers require mute for autoplay
+      video.muted = true; 
+      video.currentTime = 0; // Optional: restart video on hover
+      const playPromise = video.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.warn("Autoplay prevented:", error);
+        });
+      }
     }
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0; // Reset to start
+    const video = videoRef.current;
+    if (video) {
+      video.pause();
     }
+  };
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!videoRef.current || !cardRef.current || !isLocalVideo) return;
+    
+    // Only scrub if the video has valid duration info
+    if (isNaN(videoRef.current.duration)) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const width = rect.width;
+    const percentage = Math.max(0, Math.min(1, x / width));
+    
+    videoRef.current.currentTime = videoRef.current.duration * percentage;
   };
 
   return (
     <div
+      ref={cardRef}
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
       className={cn(
-        "group relative aspect-[9/16] rounded-2xl overflow-hidden cursor-pointer",
+        // 'project-card' class used by CustomCursor
+        "project-card group relative aspect-[9/16] rounded-2xl overflow-hidden cursor-none",
         "bg-neutral-900 border border-white/5 shadow-2xl transition-all duration-500",
         "hover:border-primary/40 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7)]",
         "opacity-0 animate-fade-in-up"
       )}
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      {/* 1. SECTION-SPECIFIC BACKGROUND ANIMATION LAYER */}
-      {/* Sits behind the image and video but inside the card container */}
+      {/* Dynamic Background Animation */}
       <div className={cn(
         "absolute inset-0 -z-10 pointer-events-none transition-opacity duration-500",
         bgClass,
         isHovered ? "opacity-100" : "opacity-40"
       )} />
 
-      {/* 2. STATIC THUMBNAIL (Visible by default) */}
+      {/* Thumbnail Image */}
       <img
         src={thumbnail}
         alt={title}
@@ -76,42 +107,39 @@ const ProjectCard = ({
         )}
       />
 
-      {/* 3. MUTED VIDEO PREVIEW (Visible on hover) */}
+      {/* Video Player (Hidden until hover) */}
       {isLocalVideo && (
         <video
           ref={videoRef}
           src={videoUrl}
-          muted
-          loop
-          playsInline
+          muted // CRITICAL for autoplay
+          playsInline // CRITICAL for mobile/safari
+          loop={false}
           className={cn(
-            "absolute inset-0 w-full h-full object-cover transition-opacity duration-500",
+            "absolute inset-0 w-full h-full object-cover transition-opacity duration-300",
             isHovered ? "opacity-100" : "opacity-0"
           )}
         />
       )}
 
-      {/* 4. CINEMATIC OVERLAYS */}
-      {/* Dark gradient for text legibility */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+      {/* Dark Overlay Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300 pointer-events-none" />
       
-      {/* Top light sweep effect */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
-
-      {/* 5. CENTER PLAY BUTTON (Glassmorphism Style) */}
+      {/* Play Button */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className={cn(
-          "p-5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl",
-          "transform transition-all duration-500 ease-out",
-          "opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100"
-        )}>
-          <Play size={28} className="text-white fill-white ml-1" />
-        </div>
+        <MagneticButton strength={40} className="pointer-events-auto">
+          <div className={cn(
+            "p-5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl",
+            "transform transition-all duration-500 ease-out",
+            "opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100"
+          )}>
+            <Play size={28} className="text-white fill-white ml-1" />
+          </div>
+        </MagneticButton>
       </div>
 
-      {/* 6. PROJECT INFO (Bottom Alignment) */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 transform transition-transform duration-500 group-hover:-translate-y-2">
-        {/* Category Badge */}
+      {/* Info Section */}
+      <div className="absolute bottom-0 left-0 right-0 p-6 transform transition-transform duration-500 group-hover:-translate-y-2 pointer-events-none">
         <div className="flex items-center gap-2 mb-3">
           <span className="h-[1px] w-4 bg-primary" />
           <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-primary-foreground/90 bg-primary/20 px-2 py-0.5 rounded backdrop-blur-sm">
@@ -119,22 +147,17 @@ const ProjectCard = ({
           </span>
         </div>
         
-        {/* Title */}
         <h3 className="font-display text-xl md:text-2xl font-bold text-white leading-tight drop-shadow-lg">
           {title}
         </h3>
 
-        {/* Dynamic Detail (Appears on hover) */}
+        {/* Progress Bar Hint */}
         <div className="mt-4 overflow-hidden h-0 group-hover:h-6 transition-all duration-500 opacity-0 group-hover:opacity-100">
-          <p className="text-[11px] text-white/50 uppercase tracking-widest flex items-center gap-2">
-            Click to View Project
-            <span className="w-1 h-1 rounded-full bg-primary animate-pulse" />
-          </p>
+          <div className="w-full h-1 bg-white/20 rounded-full mt-2 overflow-hidden">
+             <div className="h-full bg-primary animate-pulse w-full origin-left transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+          </div>
         </div>
       </div>
-
-      {/* 7. EDGE BORDER GLOW */}
-      <div className="absolute inset-0 border border-white/0 group-hover:border-white/10 rounded-2xl transition-colors duration-500 pointer-events-none" />
     </div>
   );
 };

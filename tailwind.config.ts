@@ -76,12 +76,16 @@ export default {
           to: { height: "0" },
         },
         "fade-in": {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
         },
         "fade-in-up": {
           "0%": { opacity: "0", transform: "translateY(40px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "reveal-up": {
+          "0%": { transform: "translateY(100%)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
         },
         "slide-in-left": {
           "0%": { opacity: "0", transform: "translateX(-40px)" },
@@ -111,12 +115,29 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+        grain: {
+          "0%, 100%": { transform: "translate(0, 0)" },
+          "10%": { transform: "translate(-5%, -10%)" },
+          "20%": { transform: "translate(-15%, 5%)" },
+          "30%": { transform: "translate(7%, -25%)" },
+          "40%": { transform: "translate(-5%, 25%)" },
+          "50%": { transform: "translate(-15%, 10%)" },
+          "60%": { transform: "translate(15%, 0%)" },
+          "70%": { transform: "translate(0%, 15%)" },
+          "80%": { transform: "translate(3%, 35%)" },
+          "90%": { transform: "translate(-10%, 10%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.6s ease-out forwards",
         "fade-in-up": "fade-in-up 0.8s ease-out forwards",
+        "reveal-up": "reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "slide-in-left": "slide-in-left 0.6s ease-out forwards",
         "slide-in-right": "slide-in-right 0.6s ease-out forwards",
         "scale-in": "scale-in 0.5s ease-out forwards",
@@ -124,6 +145,8 @@ export default {
         "pulse-glow": "pulse-glow 3s ease-in-out infinite",
         float: "float 6s ease-in-out infinite",
         shimmer: "shimmer 2s linear infinite",
+        marquee: "marquee 35s linear infinite",
+        grain: "grain 8s steps(10) infinite",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
