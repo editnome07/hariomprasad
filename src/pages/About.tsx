@@ -24,7 +24,6 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-// CHANGED: Replaced Percentage Levels with Icon/Category approach
 const skillsList = [
   { name: "Premiere Pro", icon: Video },
   { name: "After Effects", icon: Layers },
@@ -65,7 +64,8 @@ const About = () => {
   const mailLink = `mailto:editnomecreates07@outlook.com?subject=${mailSubject}&body=${mailBody}`;
 
   return (
-    <div className="min-h-screen bg-background">
+    // CHANGE: Transparent background
+    <div className="min-h-screen bg-transparent">
       <Navbar />
 
       {/* Hero Section */}
@@ -86,11 +86,6 @@ const About = () => {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             
-            {/* 
-               CHANGED: Profile Image 
-               Fixed Issue 1: Removed 'sticky' for mobile. added 'lg:sticky'.
-               Now on mobile it flows normally, on Desktop it stays pinned.
-            */}
             <div className="relative opacity-0 animate-slide-in-left lg:sticky lg:top-24">
               <div className="relative aspect-[4/5] max-w-md mx-auto">
                 <div className="absolute -inset-4 bg-gradient-to-br from-primary/30 to-transparent rounded-2xl blur-2xl" />
@@ -129,10 +124,6 @@ const About = () => {
                 </a>
               </div>
 
-              {/* 
-                 CHANGED: Skills Section 
-                 Fixed Issue 2: Removed percentage bars, replaced with Icon Boxes
-              */}
               <div>
                  <h3 className="font-display text-2xl font-semibold mb-6 flex items-center gap-2">
                     <span className="w-8 h-[2px] bg-primary"></span>
@@ -158,9 +149,9 @@ const About = () => {
         </div>
       </section>
 
-      {/* Tech Specs Section */}
-      <section className="py-24 bg-card relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+      {/* Tech Specs Section - Opaque background changed to glass */}
+      <section className="py-24 bg-black/20 backdrop-blur-sm relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/10 to-transparent" />
         <div className="relative container mx-auto px-6">
             <div className="text-center mb-12">
                 <p className="text-primary text-sm tracking-[0.3em] uppercase mb-4">The Engine Room</p>
@@ -180,8 +171,8 @@ const About = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-24 bg-background border-t border-border">
+      {/* Testimonials Section - Background removed */}
+      <section className="py-24 bg-transparent border-t border-white/5">
           <div className="container mx-auto px-6">
             <h2 className="font-display text-3xl md:text-4xl font-semibold text-center mb-12">What Clients Say</h2>
             
@@ -190,7 +181,7 @@ const About = () => {
                     {testimonials.map((t, index) => (
                         <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 pl-6">
                             <div className="h-full p-1">
-                                <Card className="h-full bg-card border-border hover:border-primary/50 transition-colors">
+                                <Card className="h-full bg-black/40 backdrop-blur-md border-border hover:border-primary/50 transition-colors">
                                     <CardContent className="flex flex-col justify-between p-6 h-full min-h-[200px]">
                                         <div>
                                             <Quote className="text-primary mb-4 opacity-50" size={32} />

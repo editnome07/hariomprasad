@@ -1,11 +1,9 @@
 import { 
   MonitorPlay, 
   Clapperboard, 
-  Film, 
   Aperture, 
   Layers, 
   Video, 
-  Cpu, 
   Wand2 
 } from "lucide-react";
 
@@ -14,18 +12,17 @@ const Marquee = () => {
     { name: "Adobe Premiere", icon: Video },
     { name: "After Effects", icon: Layers },
     { name: "DaVinci Resolve", icon: Aperture },
-    { name: "Cinema 4D", icon: Cpu },
-    { name: "Final Cut Pro", icon: Film },
     { name: "Sound Design", icon: MonitorPlay },
     { name: "Color Grading", icon: Wand2 },
     { name: "Visual Effects", icon: Clapperboard },
   ];
 
   return (
-    <div className="relative w-full overflow-hidden bg-background py-8 border-y border-white/5">
-      {/* Gradient Masks */}
-      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
-      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
+    // CHANGE: bg-background -> bg-transparent / bg-black/10
+    <div className="relative w-full overflow-hidden bg-black/10 backdrop-blur-sm py-8 border-y border-white/5">
+      {/* Gradient Masks - Updated to match transparency */}
+      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black/80 to-transparent z-10" />
+      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black/80 to-transparent z-10" />
 
       <div className="flex animate-marquee whitespace-nowrap">
         {/* Render 3 times for seamless loop */}

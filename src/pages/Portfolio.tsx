@@ -14,7 +14,6 @@ const categories = [
   "Business",
 ];
 
-// UPDATED: Changed background:#FFF to background:#000 in embedCode styles for Dark Theme
 const projects = [
   {
     id: 1,
@@ -22,7 +21,6 @@ const projects = [
     category: "Mixed Media",
     thumbnail: "/assets/thumbnails/jobs_mac.jpg",
     videoUrl: "/assets/videos/main sfx sequence-.mp4", 
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DQlChzRglW9/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "A high-energy inspirational sequence blending retro aesthetics with modern kinetic typography...",
     roles: ["Mixed Media", "Typography", "Sound Design"],
     bgClass: "bg-jobs-kinetic"
@@ -33,7 +31,6 @@ const projects = [
     category: "Motion Graphics",
     thumbnail: "/assets/thumbnails/iman_hook.jpg",
     videoUrl: "/assets/videos/Iman Gadhi -0.2.mp4",
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DQgoNqDAkPS/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "A masterclass in retention-focused editing designed for social media growth...",
     roles: ["Motion Graphics", "Object Tracking", "Retention Strategy"],
     bgClass: "bg-iman-orbital"
@@ -44,7 +41,6 @@ const projects = [
     category: "Rhythmic Editing",
     thumbnail: "/assets/thumbnails/gates_legacy.jpg",
     videoUrl: "/assets/videos/metro media sfx-.mp4",
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DT8aduXkzd8/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "An atmospheric, documentary-style short featuring a gritty metro aesthetic...",
     roles: ["Rhythmic Editing", "Texture Design", "Color Grading"],
     bgClass: "bg-gates-grain"
@@ -55,7 +51,6 @@ const projects = [
     category: "Podcast Visualization",
     thumbnail: "/assets/thumbnails/huberman_protocol.jpg",
     videoUrl: "/assets/videos/GETTING OLDER IS THE BEST.mp4",
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DT3be3Ik6Iw/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "A seamless visualization of long-form audio into short-form content...",
     roles: ["VFX", "3D Elements", "Illustrative Storytelling"],
     bgClass: "bg-huberman-pulse"
@@ -66,7 +61,6 @@ const projects = [
     category: "Business",
     thumbnail: "/assets/thumbnails/branding_awareness.jpg",
     videoUrl: "/assets/videos/Building a Business.mp4",
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DT085Y_E9-H/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "A polished, business-focused edit that visualizes the intangible value of SEO...",
     roles: ["Motion Design", "3D Modeling", "Corporate Branding"],
     bgClass: "bg-branding-neon"
@@ -83,7 +77,8 @@ const Portfolio = () => {
       : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-background">
+    // CHANGE: Transparent background
+    <div className="min-h-screen bg-transparent">
       <Navbar />
       <section className="pt-32 pb-16 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
@@ -141,7 +136,6 @@ const Portfolio = () => {
         isOpen={!!selectedProject}
         onClose={() => setSelectedProject(null)}
         videoUrl={selectedProject?.videoUrl || ""}
-        embedCode={selectedProject?.embedCode}
         title={selectedProject?.title || ""}
         description={selectedProject?.description}
         category={selectedProject?.category}

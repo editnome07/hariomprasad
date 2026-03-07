@@ -1,15 +1,13 @@
-import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ReactLenis from "@studio-freight/react-lenis"; // Make sure to npm install this
+import ReactLenis from "@studio-freight/react-lenis";
 import Index from "./pages/Index";
 import Portfolio from "./pages/Portfolio";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
-import CustomCursor from "./components/CustomCursor";
 
 const queryClient = new QueryClient();
 
@@ -22,9 +20,12 @@ const App = () => {
           <Toaster />
           <Sonner />
           
-          {/* Cinematic Global Elements */}
-          <CustomCursor />
-          <div className="film-grain" /> {/* Global Grain Overlay */}
+          {/* Animated Glassmorphism Background */}
+          <div className="cinematic-bg">
+            <div className="glass-shape glass-shape-1" />
+            <div className="glass-shape glass-shape-2" />
+            <div className="glass-shape glass-shape-3" />
+          </div>
           
           <BrowserRouter>
             <Routes>

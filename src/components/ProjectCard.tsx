@@ -1,7 +1,6 @@
 import { useRef, useState, MouseEvent } from "react";
 import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
-import MagneticButton from "./MagneticButton";
 
 interface ProjectCardProps {
   title: string;
@@ -26,13 +25,8 @@ const ProjectCard = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Robust check for video files
-  const isLocalVideo = 
-    videoUrl && (
-    videoUrl.toLowerCase().includes('.mp4') || 
-    videoUrl.toLowerCase().includes('.webm') || 
-    videoUrl.toLowerCase().includes('.mov')
-    );
+  // Robust check for video files - effectively checks existence since we removed Instagram support
+  const isLocalVideo = !!videoUrl;
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -81,10 +75,9 @@ const ProjectCard = ({
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
       className={cn(
-        // 'project-card' class used by CustomCursor
-        "project-card group relative aspect-[9/16] rounded-2xl overflow-hidden cursor-none",
+        "group relative aspect-[9/16] rounded-2xl overflow-hidden cursor-pointer",
         "bg-neutral-900 border border-white/5 shadow-2xl transition-all duration-500",
-        "hover:border-primary/40 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7)]",
+        "hover:border-primary/40 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7)]",
         "opacity-0 animate-fade-in-up"
       )}
       style={{ animationDelay: `${index * 100}ms` }}
@@ -96,13 +89,12 @@ const ProjectCard = ({
         isHovered ? "opacity-100" : "opacity-40"
       )} />
 
-      {/* Thumbnail Image */}
+      {/* Thumbnail Image - Static on Hover now */}
       <img
         src={thumbnail}
         alt={title}
         className={cn(
-          "absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out",
-          "group-hover:scale-110",
+          "absolute inset-0 w-full h-full object-cover transition-opacity duration-500",
           isHovered && isLocalVideo ? "opacity-0" : "opacity-100"
         )}
       />
@@ -125,9 +117,9 @@ const ProjectCard = ({
       {/* Dark Overlay Gradient */}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300 pointer-events-none" />
       
-      {/* Play Button */}
+      {/* Play Button - Magnetic effect removed */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <MagneticButton strength={40} className="pointer-events-auto">
+        <div className="pointer-events-auto">
           <div className={cn(
             "p-5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl",
             "transform transition-all duration-500 ease-out",
@@ -135,11 +127,11 @@ const ProjectCard = ({
           )}>
             <Play size={28} className="text-white fill-white ml-1" />
           </div>
-        </MagneticButton>
+        </div>
       </div>
 
       {/* Info Section */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 transform transition-transform duration-500 group-hover:-translate-y-2 pointer-events-none">
+      <div className="absolute bottom-0 left-0 right-0 p-6 transform transition-transform duration-500 pointer-events-none">
         <div className="flex items-center gap-2 mb-3">
           <span className="h-[1px] w-4 bg-primary" />
           <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-primary-foreground/90 bg-primary/20 px-2 py-0.5 rounded backdrop-blur-sm">

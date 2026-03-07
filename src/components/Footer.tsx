@@ -23,7 +23,8 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative bg-card border-t border-border">
+    // CHANGE: Removed 'bg-card', added 'bg-transparent backdrop-blur-sm' to show global animation
+    <footer className="relative bg-transparent border-t border-white/5 backdrop-blur-sm">
       {/* Crimson accent line */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
 
@@ -58,7 +59,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar - UPDATED with @kaizenbreach Link */}
-        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-border/50">
+        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/5">
           <p className="text-muted-foreground text-sm mb-4 md:mb-0">
             Created By
             <a 

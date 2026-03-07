@@ -8,31 +8,21 @@ interface VideoModalProps {
   isOpen: boolean;
   onClose: () => void;
   videoUrl: string;
-  embedCode?: string;
   title: string;
   description?: string;
   category?: string;
   roles?: string[];
 }
 
-const VideoModal = ({ isOpen, onClose, videoUrl, embedCode, title, description, category, roles }: VideoModalProps) => {
+const VideoModal = ({ isOpen, onClose, videoUrl, title, description, category, roles }: VideoModalProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const isEmbed = !!embedCode || videoUrl.trim().startsWith("<blockquote") || videoUrl.includes("instagram-media");
-  const finalEmbedCode = embedCode || (isEmbed ? videoUrl : "");
-
   useEffect(() => {
-    if (isOpen) {
-      if (!isEmbed && videoRef.current) {
-        videoRef.current.muted = false;
-        videoRef.current.play().catch(e => console.log("Playback blocked:", e));
-      } else if (isEmbed && window.instgrm) {
-        setTimeout(() => {
-          window.instgrm?.Embeds.process();
-        }, 100);
-      }
+    if (isOpen && videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.play().catch(e => console.log("Playback blocked:", e));
     }
-  }, [isOpen, isEmbed, videoUrl]);
+  }, [isOpen]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -49,41 +39,27 @@ const VideoModal = ({ isOpen, onClose, videoUrl, embedCode, title, description, 
   if (!isOpen) return null;
 
   return (
-    // UPDATED: Added overflow-y-auto to parent to prevent clipping on very small screens
-    // UPDATED: z-index ensures it is above navbar
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-6 animate-fade-in overflow-y-auto">
       <div className="absolute inset-0 bg-black/95 backdrop-blur-xl" onClick={onClose} />
       
-      {/* UPDATED: Changed h-full to max-h to prevent cutting off on desktop */}
       <div className="relative w-full max-w-5xl h-full md:h-auto md:max-h-[90vh] bg-neutral-950 border-0 md:border md:border-white/10 rounded-none md:rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
         
         {/* Media Section */}
-        <div className={cn(
-          "relative w-full md:w-[45%] bg-black flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10 shrink-0 min-h-[40vh]",
-          isEmbed ? "overflow-y-auto overflow-x-hidden" : "overflow-hidden"
-        )}>
-          {/* UPDATED: Moved Mobile Close button down to top-8 to avoid status bar clipping */}
+        <div className="relative w-full md:w-[45%] bg-black flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10 shrink-0 min-h-[40vh] overflow-hidden">
           <div className="absolute top-8 right-6 z-50 md:hidden">
             <button onClick={onClose} className="p-2 bg-black/50 rounded-full text-white backdrop-blur-md border border-white/10"><X size={24} /></button>
           </div>
           
-          {isEmbed ? (
-             <div 
-               className="w-full h-full flex items-center justify-center p-4"
-               dangerouslySetInnerHTML={{ __html: finalEmbedCode }} 
-             />
-          ) : (
-            <video 
-              ref={videoRef}
-              src={videoUrl} 
-              className="h-full w-full object-contain" 
-              controls 
-              playsInline
-            />
-          )}
+          <video 
+            ref={videoRef}
+            src={videoUrl} 
+            className="h-full w-full object-contain" 
+            controls 
+            playsInline
+          />
         </div>
 
-        {/* Scrollable Content Section */}
+        {/* Content Section */}
         <div className="flex-1 flex flex-col min-h-0 bg-neutral-900/50">
           <div className="hidden md:flex items-center justify-between p-6 border-b border-white/10">
             <h2 className="font-display text-xl font-bold pr-4">{title}</h2>
