@@ -1,16 +1,39 @@
-import { useState, MouseEvent, TouchEvent } from "react";
+import { useState, MouseEvent, TouchEvent, useRef, useEffect } from "react";
 import { GripVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface BeforeAfterProps {
-  rawImage: string;
-  gradedImage: string;
+  beforeMedia: string;
+  afterMedia: string;
+  mediaType?: "image" | "video";
   className?: string;
 }
 
-const BeforeAfter = ({ rawImage, gradedImage, className }: BeforeAfterProps) => {
+const BeforeAfter = ({ beforeMedia, afterMedia, mediaType = "image", className }: BeforeAfterProps) => {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
+  
+  const beforeVideoRef = useRef<HTMLVideoElement>(null);
+  const afterVideoRef = useRef<HTMLVideoElement>(null);
+
+  // Keep videos in sync in case one buffers longer than the other
+  useEffect(() => {
+    if (mediaType !== "video") return;
+    const beforeVid = beforeVideoRef.current;
+    const afterVid = afterVideoRef.current;
+    
+    if (!beforeVid || !afterVid) return;
+
+    const syncVideos = () => {
+      // If the videos drift apart by more than 0.3 seconds, snap them back together
+      if (Math.abs(afterVid.currentTime - beforeVid.currentTime) > 0.3) {
+        beforeVid.currentTime = afterVid.currentTime;
+      }
+    };
+
+    afterVid.addEventListener('timeupdate', syncVideos);
+    return () => afterVid.removeEventListener('timeupdate', syncVideos);
+  }, [mediaType]);
 
   const handleMove = (clientX: number, rect: DOMRect) => {
     const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
@@ -47,31 +70,52 @@ const BeforeAfter = ({ rawImage, gradedImage, className }: BeforeAfterProps) => 
       onTouchMove={onTouchMove}
       onClick={(e) => handleMove(e.clientX, e.currentTarget.getBoundingClientRect())}
     >
-      {/* 1. Background Layer: Graded Image (Full Width) */}
-      <img
-        src={gradedImage}
-        alt="Color Graded"
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-      />
+      {/* 1. Background Layer: Graded Media (Full Width) */}
+      {mediaType === "video" ? (
+        <video
+          ref={afterVideoRef}
+          src={afterMedia}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        />
+      ) : (
+        <img
+          src={afterMedia}
+          alt="Color Graded"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        />
+      )}
       <div className="absolute top-4 right-4 bg-primary/90 text-primary-foreground px-2 py-1 text-xs font-bold rounded backdrop-blur-sm z-10">
         GRADED
       </div>
 
-      {/* 2. Foreground Layer: Raw Image (Clipped) */}
-      {/* We use clipPath instead of width to prevent the image from squishing/moving */}
+      {/* 2. Foreground Layer: Raw Media (Clipped) */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ 
           clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` 
         }}
       >
-        <img
-          src={rawImage}
-          alt="Raw Footage"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        {/* Optional: Add a slight desaturated overlay to emphasize the raw look */}
-        {/* <div className="absolute inset-0 bg-black/10 mix-blend-multiply" /> */}
+        {mediaType === "video" ? (
+          <video
+            ref={beforeVideoRef}
+            src={beforeMedia}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <img
+            src={beforeMedia}
+            alt="Raw Footage"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
         
         <div className="absolute top-4 left-4 bg-black/70 text-white px-2 py-1 text-xs font-bold rounded backdrop-blur-sm border border-white/10">
           RAW / LOG

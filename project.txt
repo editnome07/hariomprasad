@@ -21,7 +21,10 @@ src/
     vite-env.d.ts
     components/
         BeforeAfter.tsx
+        CustomCursor.tsx
         Footer.tsx
+        MagneticButton.tsx
+        Marquee.tsx
         NavLink.tsx
         Navbar.tsx
         ProjectCard.tsx
@@ -248,12 +251,16 @@ export default {
           to: { height: "0" },
         },
         "fade-in": {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
         },
         "fade-in-up": {
           "0%": { opacity: "0", transform: "translateY(40px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "reveal-up": {
+          "0%": { transform: "translateY(100%)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
         },
         "slide-in-left": {
           "0%": { opacity: "0", transform: "translateX(-40px)" },
@@ -283,12 +290,29 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+        grain: {
+          "0%, 100%": { transform: "translate(0, 0)" },
+          "10%": { transform: "translate(-5%, -10%)" },
+          "20%": { transform: "translate(-15%, 5%)" },
+          "30%": { transform: "translate(7%, -25%)" },
+          "40%": { transform: "translate(-5%, 25%)" },
+          "50%": { transform: "translate(-15%, 10%)" },
+          "60%": { transform: "translate(15%, 0%)" },
+          "70%": { transform: "translate(0%, 15%)" },
+          "80%": { transform: "translate(3%, 35%)" },
+          "90%": { transform: "translate(-10%, 10%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.6s ease-out forwards",
         "fade-in-up": "fade-in-up 0.8s ease-out forwards",
+        "reveal-up": "reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "slide-in-left": "slide-in-left 0.6s ease-out forwards",
         "slide-in-right": "slide-in-right 0.6s ease-out forwards",
         "scale-in": "scale-in 0.5s ease-out forwards",
@@ -296,6 +320,8 @@ export default {
         "pulse-glow": "pulse-glow 3s ease-in-out infinite",
         float: "float 6s ease-in-out infinite",
         shimmer: "shimmer 2s linear infinite",
+        marquee: "marquee 35s linear infinite",
+        grain: "grain 8s steps(10) infinite",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -306,7 +332,6 @@ export default {
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
-
 ```
 
 ---
@@ -344,6 +369,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ReactLenis from "@studio-freight/react-lenis";
 import Index from "./pages/Index";
 import Portfolio from "./pages/Portfolio";
 import About from "./pages/About";
@@ -351,26 +377,37 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/about" element={<About />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        {/* Smooth Scroll Wrapper */}
+        <ReactLenis root options={{ lerp: 0.1, duration: 1.5, smoothWheel: true }}>
+          <Toaster />
+          <Sonner />
+          
+          {/* Animated Glassmorphism Background */}
+          <div className="cinematic-bg">
+            <div className="glass-shape glass-shape-1" />
+            <div className="glass-shape glass-shape-2" />
+            <div className="glass-shape glass-shape-3" />
+          </div>
+          
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/about" element={<About />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </ReactLenis>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
-
 ```
 
 ---
@@ -434,12 +471,29 @@ File: src\index.css
     @apply border-border;
   }
 
-  html {
-    scroll-behavior: smooth;
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  .lenis.lenis-scrolling iframe {
+    pointer-events: none;
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased overflow-x-hidden;
+    /* Critical: Transparent body so the fixed background shows through */
+    @apply bg-transparent text-foreground font-sans antialiased overflow-x-hidden;
   }
 }
 
@@ -465,20 +519,79 @@ File: src\index.css
     background-size: 200% auto;
   }
 
-  /* Global Film grain overlay */
-  .film-grain::after {
-    content: '';
+  /* 
+    UPDATED: Cinematic Glass Background 
+    Increased visibility and stacking context
+  */
+  .cinematic-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -100; /* Behind everything */
+    background: radial-gradient(circle at center, #0f0f10 0%, #000000 100%);
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Subtle noise texture for frosted glass feel */
+  .cinematic-bg::after {
+    content: "";
     position: absolute;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     opacity: 0.03;
+    mix-blend-mode: overlay;
     pointer-events: none;
-    z-index: 10;
+  }
+
+  .glass-shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px); /* Soft diffusion */
+    will-change: transform, opacity;
+    mix-blend-mode: screen; /* Helps visibility on dark background */
+  }
+
+  /* Shape 1: Crimson Crescent (Top Left) - Increased visibility */
+  .glass-shape-1 {
+    width: 60vw;
+    height: 60vw;
+    top: -10%;
+    left: -10%;
+    background: radial-gradient(circle at 30% 30%, rgba(220, 20, 60, 0.4), transparent 60%);
+    box-shadow: 40px 40px 150px rgba(220, 20, 60, 0.2); 
+    opacity: 0.6;
+    animation: glass-float-1 25s infinite ease-in-out alternate;
+  }
+
+  /* Shape 2: Blue/Silver Frost (Bottom Right) - Increased visibility */
+  .glass-shape-2 {
+    width: 50vw;
+    height: 50vw;
+    bottom: -10%;
+    right: -10%;
+    background: radial-gradient(circle at 70% 70%, rgba(50, 60, 80, 0.5), transparent 60%);
+    box-shadow: -40px -40px 120px rgba(100, 110, 130, 0.2);
+    opacity: 0.5;
+    animation: glass-float-2 30s infinite ease-in-out alternate-reverse;
+  }
+
+  /* Shape 3: Center Glow - Increased visibility */
+  .glass-shape-3 {
+    width: 35vw;
+    height: 35vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(220, 20, 60, 0.15) 0%, transparent 70%);
+    opacity: 0.4;
+    animation: glass-float-3 20s infinite linear;
   }
 }
 
 @layer utilities {
-  /* Animation delays */
   .animation-delay-100 { animation-delay: 100ms; }
   .animation-delay-200 { animation-delay: 200ms; }
   .animation-delay-300 { animation-delay: 300ms; }
@@ -486,9 +599,25 @@ File: src\index.css
   .animation-delay-500 { animation-delay: 500ms; }
   .animation-delay-600 { animation-delay: 600ms; }
 
-  /* --- SECTION SPECIFIC BACKGROUND ANIMATIONS --- */
+  /* Background Animation Keyframes */
+  @keyframes glass-float-1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(10%, 5%) scale(1.1); }
+  }
 
-  /* 1. Steve Jobs - Kinetic Grid & CRT Scanlines */
+  @keyframes glass-float-2 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-10%, -10%) scale(1.15); }
+  }
+
+  @keyframes glass-float-3 {
+    0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+    50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.3); }
+    100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+  }
+
+  /* --- SECTION SPECIFIC BACKGROUND ANIMATIONS --- */
+  
   .bg-jobs-kinetic {
     background-image: 
       linear-gradient(rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.9)),
@@ -503,7 +632,6 @@ File: src\index.css
     to { background-position: 0 40px; }
   }
 
-  /* CRT Flicker for Jobs section */
   .crt-flicker::before {
     content: " ";
     display: block;
@@ -523,7 +651,6 @@ File: src\index.css
     100% { opacity: 0.9; }
   }
 
-  /* 2. Iman Gadzhi - Gold Orbital Rings */
   .bg-iman-orbital {
     background: radial-gradient(circle at center, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
   }
@@ -553,7 +680,6 @@ File: src\index.css
     to { transform: translate(-50%, -50%) rotate(360deg); }
   }
 
-  /* 3. Bill Gates - Static Grain & Blueprint Grid */
   .bg-gates-grain {
     background-image: 
       url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"),
@@ -568,7 +694,6 @@ File: src\index.css
     100% { background-position: 10px 10px; }
   }
 
-  /* 4. Andrew Huberman - Bio-Rhythm Breathing Pulse */
   .bg-huberman-pulse {
     background: radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.05) 0%, transparent 60%);
   }
@@ -585,7 +710,6 @@ File: src\index.css
     50% { transform: scale(1.2); opacity: 0.5; }
   }
 
-  /* 5. Personal Branding - Neon Orbital Paths */
   .bg-branding-neon {
     background: radial-gradient(circle at center, rgba(255, 0, 85, 0.03) 0%, transparent 80%);
   }
@@ -606,7 +730,6 @@ File: src\index.css
   }
 }
 
-/* Accessibility: Disable all background animations for reduced motion users */
 @media (prefers-reduced-motion: reduce) {
   .bg-jobs-kinetic, 
   .crt-flicker::before, 
@@ -614,12 +737,12 @@ File: src\index.css
   .bg-iman-orbital::after, 
   .bg-gates-grain, 
   .bg-huberman-pulse::after, 
-  .bg-branding-neon::before {
+  .bg-branding-neon::before, 
+  .glass-shape {
     animation: none !important;
     background-position: center !important;
   }
 }
-
 ```
 
 ---
@@ -754,6 +877,96 @@ export default BeforeAfter;
 ```
 
 ---
+File: src\components\CustomCursor.tsx
+
+```typescript
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+
+const CustomCursor = () => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
+
+  useEffect(() => {
+    const updatePosition = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+    };
+
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "BUTTON" ||
+        target.tagName === "A" ||
+        target.closest("button") ||
+        target.closest("a") ||
+        target.closest(".project-card") ||
+        target.closest(".magnetic-target")
+      ) {
+        setIsHovered(true);
+      } else {
+        setIsHovered(false);
+      }
+    };
+
+    const handleMouseDown = () => setClicked(true);
+    const handleMouseUp = () => setClicked(false);
+
+    window.addEventListener("mousemove", updatePosition);
+    window.addEventListener("mouseover", handleMouseOver);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      window.removeEventListener("mousemove", updatePosition);
+      window.removeEventListener("mouseover", handleMouseOver);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+
+  return (
+    <div 
+      className="pointer-events-none fixed inset-0 z-[9999] hidden md:block"
+      style={{
+        left: position.x,
+        top: position.y,
+      }}
+    >
+      {/* 
+         THEME UPDATE: "The Keyframe"
+         Shape: Rotated Square (Diamond) representing an After Effects Keyframe.
+         Color: Primary (Crimson) with a glow.
+      */}
+      <div
+        className={cn(
+          "absolute -translate-x-1/2 -translate-y-1/2 bg-primary transition-all duration-200 ease-out will-change-transform",
+          // Base Shape: Diamond (rotate-45)
+          "rotate-45 shadow-[0_0_15px_rgba(220,20,60,0.6)]", 
+          
+          // Hover State: Hollow Diamond (Scale up, remove fill, add border)
+          isHovered 
+            ? "h-8 w-8 bg-transparent border-2 border-primary" 
+            : "h-3 w-3",
+          
+          // Click State: Rotate 90deg (feedback) and scale down
+          clicked && "scale-50 rotate-90"
+        )}
+      />
+      
+      {/* Center dot for precision when hovered (Target Reticle feel) */}
+      <div className={cn(
+          "absolute -translate-x-1/2 -translate-y-1/2 bg-primary rounded-full transition-all duration-200",
+          isHovered ? "h-1.5 w-1.5 opacity-100" : "h-0 w-0 opacity-0"
+      )} />
+    </div>
+  );
+};
+
+export default CustomCursor;
+```
+
+---
 File: src\components\Footer.tsx
 
 ```typescript
@@ -782,7 +995,8 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative bg-card border-t border-border">
+    // CHANGE: Removed 'bg-card', added 'bg-transparent backdrop-blur-sm' to show global animation
+    <footer className="relative bg-transparent border-t border-white/5 backdrop-blur-sm">
       {/* Crimson accent line */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
 
@@ -817,7 +1031,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar - UPDATED with @kaizenbreach Link */}
-        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-border/50">
+        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/5">
           <p className="text-muted-foreground text-sm mb-4 md:mb-0">
             Created By
             <a 
@@ -843,6 +1057,107 @@ const Footer = () => {
 };
 
 export default Footer;
+```
+
+---
+File: src\components\MagneticButton.tsx
+
+```typescript
+import { useRef, useState, MouseEvent } from "react";
+import { cn } from "@/lib/utils";
+
+interface MagneticButtonProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+  strength?: number; // How far it moves (default 30)
+}
+
+const MagneticButton = ({ children, className, strength = 30, ...props }: MagneticButtonProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+
+    const x = clientX - (left + width / 2);
+    const y = clientY - (top + height / 2);
+
+    setPosition({ x: x / (100 / strength), y: y / (100 / strength) });
+  };
+
+  const handleMouseLeave = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={cn("magnetic-target inline-block transition-transform duration-200 ease-out", className)}
+      style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
+
+export default MagneticButton;
+```
+
+---
+File: src\components\Marquee.tsx
+
+```typescript
+import { 
+  MonitorPlay, 
+  Clapperboard, 
+  Aperture, 
+  Layers, 
+  Video, 
+  Wand2 
+} from "lucide-react";
+
+const Marquee = () => {
+  const items = [
+    { name: "Adobe Premiere", icon: Video },
+    { name: "After Effects", icon: Layers },
+    { name: "DaVinci Resolve", icon: Aperture },
+    { name: "Sound Design", icon: MonitorPlay },
+    { name: "Color Grading", icon: Wand2 },
+    { name: "Visual Effects", icon: Clapperboard },
+  ];
+
+  return (
+    // CHANGE: bg-background -> bg-transparent / bg-black/10
+    <div className="relative w-full overflow-hidden bg-black/10 backdrop-blur-sm py-8 border-y border-white/5">
+      {/* Gradient Masks - Updated to match transparency */}
+      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black/80 to-transparent z-10" />
+      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black/80 to-transparent z-10" />
+
+      <div className="flex animate-marquee whitespace-nowrap">
+        {/* Render 3 times for seamless loop */}
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="flex shrink-0 gap-16 pr-16">
+            {items.map((item, index) => (
+              <div key={index} className="flex items-center gap-4 text-white/20 hover:text-primary/50 transition-colors duration-300">
+                <item.icon size={32} />
+                <span className="font-display text-2xl font-bold uppercase tracking-widest">
+                  {item.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Marquee;
 ```
 
 ---
@@ -997,7 +1312,7 @@ export { NavLink };
 File: src\components\ProjectCard.tsx
 
 ```typescript
-import { useRef, useState } from "react";
+import { useRef, useState, MouseEvent } from "react";
 import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -1008,7 +1323,7 @@ interface ProjectCardProps {
   thumbnail: string;
   onClick: () => void;
   index: number;
-  bgClass?: string; // For the section-specific background animations
+  bgClass?: string;
 }
 
 const ProjectCard = ({ 
@@ -1021,96 +1336,116 @@ const ProjectCard = ({
   bgClass 
 }: ProjectCardProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Check if it's a local file for the grid preview functionality
-  const isLocalVideo = videoUrl.toLowerCase().endsWith('.mp4') || videoUrl.toLowerCase().endsWith('.webm');
+  // Robust check for video files - effectively checks existence since we removed Instagram support
+  const isLocalVideo = !!videoUrl;
 
   const handleMouseEnter = () => {
     setIsHovered(true);
-    if (videoRef.current) {
-      videoRef.current.play().catch((error) => {
-        console.warn("Autoplay blocked or video not loaded:", error);
-      });
+    const video = videoRef.current;
+    if (video) {
+      // Browsers require mute for autoplay
+      video.muted = true; 
+      video.currentTime = 0; // Optional: restart video on hover
+      const playPromise = video.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.warn("Autoplay prevented:", error);
+        });
+      }
     }
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0; // Reset to start
+    const video = videoRef.current;
+    if (video) {
+      video.pause();
     }
+  };
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!videoRef.current || !cardRef.current || !isLocalVideo) return;
+    
+    // Only scrub if the video has valid duration info
+    if (isNaN(videoRef.current.duration)) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const width = rect.width;
+    const percentage = Math.max(0, Math.min(1, x / width));
+    
+    videoRef.current.currentTime = videoRef.current.duration * percentage;
   };
 
   return (
     <div
+      ref={cardRef}
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
       className={cn(
         "group relative aspect-[9/16] rounded-2xl overflow-hidden cursor-pointer",
         "bg-neutral-900 border border-white/5 shadow-2xl transition-all duration-500",
-        "hover:border-primary/40 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7)]",
+        "hover:border-primary/40 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7)]",
         "opacity-0 animate-fade-in-up"
       )}
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      {/* 1. SECTION-SPECIFIC BACKGROUND ANIMATION LAYER */}
-      {/* Sits behind the image and video but inside the card container */}
+      {/* Dynamic Background Animation */}
       <div className={cn(
         "absolute inset-0 -z-10 pointer-events-none transition-opacity duration-500",
         bgClass,
         isHovered ? "opacity-100" : "opacity-40"
       )} />
 
-      {/* 2. STATIC THUMBNAIL (Visible by default) */}
+      {/* Thumbnail Image - Static on Hover now */}
       <img
         src={thumbnail}
         alt={title}
         className={cn(
-          "absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out",
-          "group-hover:scale-110",
+          "absolute inset-0 w-full h-full object-cover transition-opacity duration-500",
           isHovered && isLocalVideo ? "opacity-0" : "opacity-100"
         )}
       />
 
-      {/* 3. MUTED VIDEO PREVIEW (Visible on hover) */}
+      {/* Video Player (Hidden until hover) */}
       {isLocalVideo && (
         <video
           ref={videoRef}
           src={videoUrl}
-          muted
-          loop
-          playsInline
+          muted // CRITICAL for autoplay
+          playsInline // CRITICAL for mobile/safari
+          loop={false}
           className={cn(
-            "absolute inset-0 w-full h-full object-cover transition-opacity duration-500",
+            "absolute inset-0 w-full h-full object-cover transition-opacity duration-300",
             isHovered ? "opacity-100" : "opacity-0"
           )}
         />
       )}
 
-      {/* 4. CINEMATIC OVERLAYS */}
-      {/* Dark gradient for text legibility */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+      {/* Dark Overlay Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300 pointer-events-none" />
       
-      {/* Top light sweep effect */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
-
-      {/* 5. CENTER PLAY BUTTON (Glassmorphism Style) */}
+      {/* Play Button - Magnetic effect removed */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className={cn(
-          "p-5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl",
-          "transform transition-all duration-500 ease-out",
-          "opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100"
-        )}>
-          <Play size={28} className="text-white fill-white ml-1" />
+        <div className="pointer-events-auto">
+          <div className={cn(
+            "p-5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl",
+            "transform transition-all duration-500 ease-out",
+            "opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100"
+          )}>
+            <Play size={28} className="text-white fill-white ml-1" />
+          </div>
         </div>
       </div>
 
-      {/* 6. PROJECT INFO (Bottom Alignment) */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 transform transition-transform duration-500 group-hover:-translate-y-2">
-        {/* Category Badge */}
+      {/* Info Section */}
+      <div className="absolute bottom-0 left-0 right-0 p-6 transform transition-transform duration-500 pointer-events-none">
         <div className="flex items-center gap-2 mb-3">
           <span className="h-[1px] w-4 bg-primary" />
           <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-primary-foreground/90 bg-primary/20 px-2 py-0.5 rounded backdrop-blur-sm">
@@ -1118,22 +1453,17 @@ const ProjectCard = ({
           </span>
         </div>
         
-        {/* Title */}
         <h3 className="font-display text-xl md:text-2xl font-bold text-white leading-tight drop-shadow-lg">
           {title}
         </h3>
 
-        {/* Dynamic Detail (Appears on hover) */}
+        {/* Progress Bar Hint */}
         <div className="mt-4 overflow-hidden h-0 group-hover:h-6 transition-all duration-500 opacity-0 group-hover:opacity-100">
-          <p className="text-[11px] text-white/50 uppercase tracking-widest flex items-center gap-2">
-            Click to View Project
-            <span className="w-1 h-1 rounded-full bg-primary animate-pulse" />
-          </p>
+          <div className="w-full h-1 bg-white/20 rounded-full mt-2 overflow-hidden">
+             <div className="h-full bg-primary animate-pulse w-full origin-left transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+          </div>
         </div>
       </div>
-
-      {/* 7. EDGE BORDER GLOW */}
-      <div className="absolute inset-0 border border-white/0 group-hover:border-white/10 rounded-2xl transition-colors duration-500 pointer-events-none" />
     </div>
   );
 };
@@ -1155,31 +1485,21 @@ interface VideoModalProps {
   isOpen: boolean;
   onClose: () => void;
   videoUrl: string;
-  embedCode?: string;
   title: string;
   description?: string;
   category?: string;
   roles?: string[];
 }
 
-const VideoModal = ({ isOpen, onClose, videoUrl, embedCode, title, description, category, roles }: VideoModalProps) => {
+const VideoModal = ({ isOpen, onClose, videoUrl, title, description, category, roles }: VideoModalProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const isEmbed = !!embedCode || videoUrl.trim().startsWith("<blockquote") || videoUrl.includes("instagram-media");
-  const finalEmbedCode = embedCode || (isEmbed ? videoUrl : "");
-
   useEffect(() => {
-    if (isOpen) {
-      if (!isEmbed && videoRef.current) {
-        videoRef.current.muted = false;
-        videoRef.current.play().catch(e => console.log("Playback blocked:", e));
-      } else if (isEmbed && window.instgrm) {
-        setTimeout(() => {
-          window.instgrm?.Embeds.process();
-        }, 100);
-      }
+    if (isOpen && videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.play().catch(e => console.log("Playback blocked:", e));
     }
-  }, [isOpen, isEmbed, videoUrl]);
+  }, [isOpen]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -1196,41 +1516,27 @@ const VideoModal = ({ isOpen, onClose, videoUrl, embedCode, title, description, 
   if (!isOpen) return null;
 
   return (
-    // UPDATED: Added overflow-y-auto to parent to prevent clipping on very small screens
-    // UPDATED: z-index ensures it is above navbar
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-6 animate-fade-in overflow-y-auto">
       <div className="absolute inset-0 bg-black/95 backdrop-blur-xl" onClick={onClose} />
       
-      {/* UPDATED: Changed h-full to max-h to prevent cutting off on desktop */}
       <div className="relative w-full max-w-5xl h-full md:h-auto md:max-h-[90vh] bg-neutral-950 border-0 md:border md:border-white/10 rounded-none md:rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
         
         {/* Media Section */}
-        <div className={cn(
-          "relative w-full md:w-[45%] bg-black flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10 shrink-0 min-h-[40vh]",
-          isEmbed ? "overflow-y-auto overflow-x-hidden" : "overflow-hidden"
-        )}>
-          {/* UPDATED: Moved Mobile Close button down to top-8 to avoid status bar clipping */}
+        <div className="relative w-full md:w-[45%] bg-black flex items-center justify-center border-b md:border-b-0 md:border-r border-white/10 shrink-0 min-h-[40vh] overflow-hidden">
           <div className="absolute top-8 right-6 z-50 md:hidden">
             <button onClick={onClose} className="p-2 bg-black/50 rounded-full text-white backdrop-blur-md border border-white/10"><X size={24} /></button>
           </div>
           
-          {isEmbed ? (
-             <div 
-               className="w-full h-full flex items-center justify-center p-4"
-               dangerouslySetInnerHTML={{ __html: finalEmbedCode }} 
-             />
-          ) : (
-            <video 
-              ref={videoRef}
-              src={videoUrl} 
-              className="h-full w-full object-contain" 
-              controls 
-              playsInline
-            />
-          )}
+          <video 
+            ref={videoRef}
+            src={videoUrl} 
+            className="h-full w-full object-contain" 
+            controls 
+            playsInline
+          />
         </div>
 
-        {/* Scrollable Content Section */}
+        {/* Content Section */}
         <div className="flex-1 flex flex-col min-h-0 bg-neutral-900/50">
           <div className="hidden md:flex items-center justify-between p-6 border-b border-white/10">
             <h2 className="font-display text-xl font-bold pr-4">{title}</h2>
@@ -5837,7 +6143,6 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-// CHANGED: Replaced Percentage Levels with Icon/Category approach
 const skillsList = [
   { name: "Premiere Pro", icon: Video },
   { name: "After Effects", icon: Layers },
@@ -5878,7 +6183,8 @@ const About = () => {
   const mailLink = `mailto:editnomecreates07@outlook.com?subject=${mailSubject}&body=${mailBody}`;
 
   return (
-    <div className="min-h-screen bg-background">
+    // CHANGE: Transparent background
+    <div className="min-h-screen bg-transparent">
       <Navbar />
 
       {/* Hero Section */}
@@ -5899,11 +6205,6 @@ const About = () => {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             
-            {/* 
-               CHANGED: Profile Image 
-               Fixed Issue 1: Removed 'sticky' for mobile. added 'lg:sticky'.
-               Now on mobile it flows normally, on Desktop it stays pinned.
-            */}
             <div className="relative opacity-0 animate-slide-in-left lg:sticky lg:top-24">
               <div className="relative aspect-[4/5] max-w-md mx-auto">
                 <div className="absolute -inset-4 bg-gradient-to-br from-primary/30 to-transparent rounded-2xl blur-2xl" />
@@ -5942,10 +6243,6 @@ const About = () => {
                 </a>
               </div>
 
-              {/* 
-                 CHANGED: Skills Section 
-                 Fixed Issue 2: Removed percentage bars, replaced with Icon Boxes
-              */}
               <div>
                  <h3 className="font-display text-2xl font-semibold mb-6 flex items-center gap-2">
                     <span className="w-8 h-[2px] bg-primary"></span>
@@ -5971,9 +6268,9 @@ const About = () => {
         </div>
       </section>
 
-      {/* Tech Specs Section */}
-      <section className="py-24 bg-card relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+      {/* Tech Specs Section - Opaque background changed to glass */}
+      <section className="py-24 bg-black/20 backdrop-blur-sm relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/10 to-transparent" />
         <div className="relative container mx-auto px-6">
             <div className="text-center mb-12">
                 <p className="text-primary text-sm tracking-[0.3em] uppercase mb-4">The Engine Room</p>
@@ -5993,8 +6290,8 @@ const About = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-24 bg-background border-t border-border">
+      {/* Testimonials Section - Background removed */}
+      <section className="py-24 bg-transparent border-t border-white/5">
           <div className="container mx-auto px-6">
             <h2 className="font-display text-3xl md:text-4xl font-semibold text-center mb-12">What Clients Say</h2>
             
@@ -6003,7 +6300,7 @@ const About = () => {
                     {testimonials.map((t, index) => (
                         <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 pl-6">
                             <div className="h-full p-1">
-                                <Card className="h-full bg-card border-border hover:border-primary/50 transition-colors">
+                                <Card className="h-full bg-black/40 backdrop-blur-md border-border hover:border-primary/50 transition-colors">
                                     <CardContent className="flex flex-col justify-between p-6 h-full min-h-[200px]">
                                         <div>
                                             <Quote className="text-primary mb-4 opacity-50" size={32} />
@@ -6044,21 +6341,16 @@ import {
   HardDriveDownload, 
   Layers, 
   Wand2, 
-  FileCheck2,
-  Video as VideoIcon, 
-  Palette, 
-  Aperture, 
-  MonitorPlay 
+  FileCheck2 
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProjectCard from "@/components/ProjectCard";
 import VideoModal from "@/components/VideoModal";
 import BeforeAfter from "@/components/BeforeAfter";
+import Marquee from "@/components/Marquee"; 
 import { Button } from "@/components/ui/button";
 
-// --- DATA: Portfolio ---
-// UPDATED: Changed background:#FFF to background:#000 in embedCode styles for Dark Theme
 const projects = [
   {
     id: 1,
@@ -6066,7 +6358,6 @@ const projects = [
     category: "Mixed Media",
     thumbnail: "/assets/thumbnails/jobs_mac.jpg",
     videoUrl: "/assets/videos/main sfx sequence-.mp4", 
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DQlChzRglW9/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "A high-energy inspirational sequence blending retro aesthetics with modern kinetic typography...",
     roles: ["Mixed Media", "Typography", "Sound Design"],
     bgClass: "bg-jobs-kinetic"
@@ -6077,7 +6368,6 @@ const projects = [
     category: "Motion Graphics",
     thumbnail: "/assets/thumbnails/iman_hook.jpg",
     videoUrl: "/assets/videos/Iman Gadhi -0.2.mp4",
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DQgoNqDAkPS/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "A masterclass in retention-focused editing designed for social media growth...",
     roles: ["Motion Graphics", "Object Tracking", "Retention Strategy"],
     bgClass: "bg-iman-orbital"
@@ -6088,7 +6378,6 @@ const projects = [
     category: "Rhythmic Editing",
     thumbnail: "/assets/thumbnails/gates_legacy.jpg",
     videoUrl: "/assets/videos/metro media sfx-.mp4",
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DT8aduXkzd8/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "An atmospheric, documentary-style short featuring a gritty metro aesthetic...",
     roles: ["Rhythmic Editing", "Texture Design", "Color Grading"],
     bgClass: "bg-gates-grain"
@@ -6099,7 +6388,6 @@ const projects = [
     category: "Podcast Visualization",
     thumbnail: "/assets/thumbnails/huberman_protocol.jpg",
     videoUrl: "/assets/videos/GETTING OLDER IS THE BEST.mp4",
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DT3be3Ik6Iw/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "A seamless visualization of long-form audio into short-form content...",
     roles: ["VFX", "3D Elements", "Illustrative Storytelling"],
     bgClass: "bg-huberman-pulse"
@@ -6110,7 +6398,6 @@ const projects = [
     category: "Business",
     thumbnail: "/assets/thumbnails/branding_awareness.jpg",
     videoUrl: "/assets/videos/Building a Business.mp4",
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DT085Y_E9-H/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "A polished, business-focused edit that visualizes the intangible value of SEO...",
     roles: ["Motion Design", "3D Modeling", "Corporate Branding"],
     bgClass: "bg-branding-neon"
@@ -6144,13 +6431,6 @@ const processSteps = [
   }
 ];
 
-const skillsList = [
-  { name: "Premiere Pro", icon: VideoIcon },
-  { name: "After Effects", icon: Layers },
-  { name: "Motion Graphics", icon: MonitorPlay },
-  { name: "Color Grading", icon: Wand2 },
-];
-
 const mailSubject = encodeURIComponent("Project Inquiry: [Your Brand/Project Name]");
 const mailBody = encodeURIComponent("Hi Hariom,\n\nI'm reaching out after seeing your portfolio. I'd love to discuss a potential video project with you.\n\nProject Details:\n- Content Type (Reels/Ad/YouTube):\n- Estimated Footage Length:\n- Desired Deadline:\n\nLooking forward to your response!");
 const mailLink = `mailto:editnomecreates07@outlook.com?subject=${mailSubject}&body=${mailBody}`;
@@ -6159,27 +6439,30 @@ const Index = () => {
   const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
 
   return (
-    <div className="min-h-screen bg-background">
+    // CHANGE: bg-background removed to reveal fixed cinematic-bg
+    <div className="min-h-screen bg-transparent cursor-default">
       <Navbar />
 
       <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-hero-gradient" />
+        {/* CHANGE: Opaque hero gradient replaced with transparent one */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/20" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-float" />
         <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[150px] animate-float animation-delay-300" />
-        <div className="absolute inset-0 film-grain" />
-
+        
         <div className="relative z-10 container mx-auto px-6 text-center">
           <p className="text-muted-foreground text-sm md:text-base tracking-[0.3em] uppercase mb-6 opacity-0 animate-fade-in">
             “Editing stories, not just videos.”
           </p>
 
-          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight mb-10 opacity-0 animate-fade-in animation-delay-200">
-            Crafting Stories.
-            <br />
-            <span className="text-primary">Frame by Frame</span>
-          </h1>
+          <div className="overflow-hidden mb-10">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight opacity-0 animate-reveal-up animation-delay-200">
+              Crafting Stories.
+              <br />
+              <span className="text-primary text-gradient-crimson">Frame by Frame</span>
+            </h1>
+          </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in animation-delay-500">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center opacity-0 animate-fade-in animation-delay-500">
             <a href="#portfolio">
               <Button
                 size="lg"
@@ -6196,7 +6479,7 @@ const Index = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="group px-8 py-6 text-lg font-medium rounded-full border-border hover:border-primary hover:text-primary transition-all duration-300"
+                className="group px-8 py-6 text-lg font-medium rounded-full border-border hover:border-primary hover:text-primary transition-all duration-300 bg-background/50 backdrop-blur-sm"
               >
                 <span className="flex items-center gap-2">
                   <Mail size={20} />
@@ -6208,35 +6491,44 @@ const Index = () => {
         </div>
       </section>
 
-       <section id="portfolio" className="py-24 bg-background relative border-t border-border/50">
-         <div className="container mx-auto px-6">
-           <div className="text-center mb-20">
-             <p className="text-primary text-sm font-bold tracking-[0.4em] uppercase mb-4">Selected Works</p>
-             <h2 className="font-display text-4xl md:text-6xl font-semibold">Motion Gallery</h2>
-           </div>
-       
-           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
-             {projects.map((project, index) => (
-               <ProjectCard
-                 key={project.id}
-                 title={project.title}
-                 category={project.category}
-                 thumbnail={project.thumbnail}
-                 videoUrl={project.videoUrl} 
-                 onClick={() => setSelectedProject(project)}
-                 index={index}
-                 bgClass={project.bgClass}
-               />
-             ))}
-           </div>
-         </div>
-       </section>
+      <Marquee />
+
+      {/* CHANGE: bg-background removed to reveal fixed background */}
+      <section id="portfolio" className="py-32 bg-transparent relative">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-20">
+            <p className="text-primary text-sm font-bold tracking-[0.4em] uppercase mb-4">Selected Works</p>
+            <div className="overflow-hidden">
+               <h2 className="font-display text-4xl md:text-6xl font-semibold animate-reveal-up">Motion Gallery</h2>
+            </div>
+          </div>
       
-      <section className="py-24 bg-card border-t border-border">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-8">
+            {projects.map((project, index) => (
+              <div key={project.id} className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]">
+                <ProjectCard
+                  title={project.title}
+                  category={project.category}
+                  thumbnail={project.thumbnail}
+                  videoUrl={project.videoUrl} 
+                  onClick={() => setSelectedProject(project)}
+                  index={index}
+                  bgClass={project.bgClass}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* CHANGE: bg-card replaced with semi-transparent black */}
+      <section className="py-24 bg-black/20 backdrop-blur-sm border-t border-white/5">
          <div className="container mx-auto px-6">
             <div className="text-center mb-16">
                 <p className="text-primary text-sm tracking-[0.3em] uppercase mb-4">Workflow</p>
-                <h2 className="font-display text-3xl md:text-4xl font-semibold">How I Work</h2>
+                <div className="overflow-hidden">
+                   <h2 className="font-display text-3xl md:text-4xl font-semibold animate-reveal-up">How I Work</h2>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -6246,7 +6538,7 @@ const Index = () => {
                             <div className="hidden lg:block absolute top-8 left-1/2 w-full h-[1px] bg-border group-hover:bg-primary/50 transition-colors duration-500" />
                         )}
                         <div className="relative z-10 flex flex-col items-center text-center">
-                            <div className="w-16 h-16 rounded-full bg-secondary border border-border flex items-center justify-center mb-6 group-hover:border-primary group-hover:glow-crimson-subtle transition-all duration-300">
+                            <div className="w-16 h-16 rounded-full bg-secondary/80 border border-border flex items-center justify-center mb-6 group-hover:border-primary group-hover:glow-crimson-subtle transition-all duration-300 transform">
                                 <step.icon className="text-muted-foreground group-hover:text-primary transition-colors" size={28} />
                             </div>
                             <h3 className="font-display text-xl font-medium mb-2">{step.title}</h3>
@@ -6258,7 +6550,8 @@ const Index = () => {
          </div>
       </section>
 
-      <section className="py-24 bg-background border-t border-border relative overflow-hidden">
+      {/* CHANGE: bg-background removed */}
+      <section className="py-24 bg-transparent border-t border-white/5 relative overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
             <div className="text-center mb-12">
                  <p className="text-primary text-sm tracking-[0.3em] uppercase mb-4">Post Production</p>
@@ -6276,11 +6569,12 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="about" className="py-24 bg-card relative border-t border-border">
+      {/* CHANGE: bg-card replaced with semi-transparent black */}
+      <section id="about" className="py-24 bg-black/20 backdrop-blur-sm relative border-t border-white/5">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div className="relative opacity-0 animate-slide-in-left lg:sticky lg:top-24">
-              <div className="relative aspect-[4/5] max-w-md mx-auto">
+              <div className="relative aspect-[4/5] max-w-sm mx-auto group">
                 <div className="absolute -inset-4 bg-gradient-to-br from-primary/30 to-transparent rounded-2xl blur-2xl" />
                 <div className="relative h-full rounded-2xl overflow-hidden border-2 border-primary/30 animate-pulse-glow">
                   <img
@@ -6298,9 +6592,11 @@ const Index = () => {
                 <p className="text-primary text-sm tracking-[0.3em] uppercase mb-4">
                   About Me
                 </p>
-                <h2 className="font-display text-3xl md:text-4xl font-semibold mb-6">
-                  Hi, I'm Hariom
-                </h2>
+                <div className="overflow-hidden">
+                    <h2 className="font-display text-3xl md:text-4xl font-semibold mb-6 animate-reveal-up">
+                    Hi, I'm Hariom
+                    </h2>
+                </div>
                 <div className="space-y-4 text-muted-foreground leading-relaxed mb-8">
                     <p>
                     With 1.5 years in the field, I help brands and creators transform raw footage into high-impact visual stories.
@@ -6316,22 +6612,6 @@ const Index = () => {
                   </Button>
                 </a>
               </div>
-
-              <div>
-                 <h3 className="font-display text-xl font-semibold mb-6 flex items-center gap-2">
-                    Software Proficiency
-                 </h3>
-                 <div className="grid grid-cols-2 gap-4">
-                    {skillsList.map((skill) => (
-                    <div key={skill.name} className="flex items-center gap-3 p-4 rounded-xl bg-background border border-border">
-                        <div className="text-primary">
-                           <skill.icon size={20} />
-                        </div>
-                        <span className="font-medium text-foreground">{skill.name}</span>
-                    </div>
-                    ))}
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -6343,7 +6623,6 @@ const Index = () => {
         isOpen={!!selectedProject}
         onClose={() => setSelectedProject(null)}
         videoUrl={selectedProject?.videoUrl || ""}
-        embedCode={selectedProject?.embedCode}
         title={selectedProject?.title || ""}
         description={selectedProject?.description}
         category={selectedProject?.category}
@@ -6407,7 +6686,6 @@ const categories = [
   "Business",
 ];
 
-// UPDATED: Changed background:#FFF to background:#000 in embedCode styles for Dark Theme
 const projects = [
   {
     id: 1,
@@ -6415,7 +6693,6 @@ const projects = [
     category: "Mixed Media",
     thumbnail: "/assets/thumbnails/jobs_mac.jpg",
     videoUrl: "/assets/videos/main sfx sequence-.mp4", 
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DQlChzRglW9/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "A high-energy inspirational sequence blending retro aesthetics with modern kinetic typography...",
     roles: ["Mixed Media", "Typography", "Sound Design"],
     bgClass: "bg-jobs-kinetic"
@@ -6426,7 +6703,6 @@ const projects = [
     category: "Motion Graphics",
     thumbnail: "/assets/thumbnails/iman_hook.jpg",
     videoUrl: "/assets/videos/Iman Gadhi -0.2.mp4",
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DQgoNqDAkPS/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "A masterclass in retention-focused editing designed for social media growth...",
     roles: ["Motion Graphics", "Object Tracking", "Retention Strategy"],
     bgClass: "bg-iman-orbital"
@@ -6437,7 +6713,6 @@ const projects = [
     category: "Rhythmic Editing",
     thumbnail: "/assets/thumbnails/gates_legacy.jpg",
     videoUrl: "/assets/videos/metro media sfx-.mp4",
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DT8aduXkzd8/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "An atmospheric, documentary-style short featuring a gritty metro aesthetic...",
     roles: ["Rhythmic Editing", "Texture Design", "Color Grading"],
     bgClass: "bg-gates-grain"
@@ -6448,7 +6723,6 @@ const projects = [
     category: "Podcast Visualization",
     thumbnail: "/assets/thumbnails/huberman_protocol.jpg",
     videoUrl: "/assets/videos/GETTING OLDER IS THE BEST.mp4",
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DT3be3Ik6Iw/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "A seamless visualization of long-form audio into short-form content...",
     roles: ["VFX", "3D Elements", "Illustrative Storytelling"],
     bgClass: "bg-huberman-pulse"
@@ -6459,7 +6733,6 @@ const projects = [
     category: "Business",
     thumbnail: "/assets/thumbnails/branding_awareness.jpg",
     videoUrl: "/assets/videos/Building a Business.mp4",
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DT085Y_E9-H/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#000; border:1px solid #333; border-radius:3px; box-shadow:none; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
     description: "A polished, business-focused edit that visualizes the intangible value of SEO...",
     roles: ["Motion Design", "3D Modeling", "Corporate Branding"],
     bgClass: "bg-branding-neon"
@@ -6476,7 +6749,8 @@ const Portfolio = () => {
       : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-background">
+    // CHANGE: Transparent background
+    <div className="min-h-screen bg-transparent">
       <Navbar />
       <section className="pt-32 pb-16 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
@@ -6534,7 +6808,6 @@ const Portfolio = () => {
         isOpen={!!selectedProject}
         onClose={() => setSelectedProject(null)}
         videoUrl={selectedProject?.videoUrl || ""}
-        embedCode={selectedProject?.embedCode}
         title={selectedProject?.title || ""}
         description={selectedProject?.description}
         category={selectedProject?.category}
