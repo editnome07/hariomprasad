@@ -15,7 +15,8 @@ import BeforeAfter from "@/components/BeforeAfter";
 import Marquee from "@/components/Marquee"; 
 import { Button } from "@/components/ui/button";
 
-const projects = [
+// --- DATA: REELS / VERTICAL ---
+const shortFormProjects = [
   {
     id: 1,
     title: "Kinetic Manifesto: The Broader Life",
@@ -24,7 +25,8 @@ const projects = [
     videoUrl: "/assets/videos/main sfx sequence-.mp4", 
     description: "A high-energy inspirational sequence blending retro aesthetics with modern kinetic typography...",
     roles: ["Mixed Media", "Typography", "Sound Design"],
-    bgClass: "bg-jobs-kinetic"
+    bgClass: "bg-jobs-kinetic",
+    aspectRatio: "vertical"
   },
   {
     id: 2,
@@ -34,37 +36,78 @@ const projects = [
     videoUrl: "/assets/videos/Iman Gadhi -0.2.mp4",
     description: "A masterclass in retention-focused editing designed for social media growth...",
     roles: ["Motion Graphics", "Object Tracking", "Retention Strategy"],
-    bgClass: "bg-iman-orbital"
+    bgClass: "bg-iman-orbital",
+    aspectRatio: "vertical"
   },
   {
     id: 3,
+    title: "Cinematic Story Telling Edit",
+    category: "Story Telling",
+    thumbnail: "/assets/thumbnails/THARUN.jpeg",
+    videoUrl: "/assets/videos/Tharun.mp4",
+    description: "A seamless visualization of long-form audio into short-form content...",
+    roles: ["Transitions", "Sound Design", "Illustrative Storytelling"],
+    bgClass: "bg-huberman-pulse",
+    aspectRatio: "vertical"
+  },
+  {
+    id: 4,
+    title: "UI Concept Animation",
+    category: "UI Animation",
+    thumbnail: "/assets/thumbnails/ui_animation.jpeg",
+    videoUrl: "/assets/videos/ui_animation.mp4",
+    description: "Sleek, modern UI/UX animation demonstration focusing on fluid transitions and product interaction.",
+    roles: ["UI Animation", "Motion Graphics", "Interface Design"],
+    bgClass: "bg-branding-neon",
+    aspectRatio: "vertical"
+  },
+  {
+    id: 5,
     title: "Grayscale Collage: The Builder’s Legacy",
     category: "Rhythmic Editing",
     thumbnail: "/assets/thumbnails/gates_legacy.jpg",
     videoUrl: "/assets/videos/metro media sfx-.mp4",
     description: "An atmospheric, documentary-style short featuring a gritty metro aesthetic...",
-    roles: ["Rhythmic Editing", "Texture Design", "Color Grading"],
-    bgClass: "bg-gates-grain"
+    roles: ["Rhythmic Editing", "Texture Design", "3D"],
+    bgClass: "bg-gates-grain",
+    aspectRatio: "vertical"
   },
   {
-    id: 4,
-    title: "Visualized Audio: The Longevity Protocol",
-    category: "Podcast Visualization",
-    thumbnail: "/assets/thumbnails/huberman_protocol.jpg",
-    videoUrl: "/assets/videos/GETTING OLDER IS THE BEST.mp4",
-    description: "A seamless visualization of long-form audio into short-form content...",
-    roles: ["VFX", "3D Elements", "Illustrative Storytelling"],
-    bgClass: "bg-huberman-pulse"
-  },
-  {
-    id: 5,
+    id: 6,
     title: "Digital Presence: The Awareness Engine",
     category: "Business",
     thumbnail: "/assets/thumbnails/branding_awareness.jpg",
-    videoUrl: "/assets/videos/Building a Business.mp4",
+    videoUrl: "/assets/videos/Digital Presence.mp4",
     description: "A polished, business-focused edit that visualizes the intangible value of SEO...",
     roles: ["Motion Design", "3D Modeling", "Corporate Branding"],
-    bgClass: "bg-branding-neon"
+    bgClass: "bg-branding-neon",
+    aspectRatio: "vertical"
+  }
+];
+
+// --- DATA: YOUTUBE / HORIZONTAL ---
+const longFormProjects = [
+  {
+    id: 7,
+    title: "Talking Head Explainer Edit",
+    category: "Talking Head Video",
+    thumbnail: "/assets/thumbnails/abhaya_edits.jpeg",
+    videoUrl: "/assets/videos/abhaya_edits.mp4",
+    description: "Clean edits, impactful motion graphics, and sound design that enhances clarity and engagement.",
+    roles: ["Narrative Flow", "Advanced Color", "Soundscape"],
+    bgClass: "bg-jobs-kinetic",
+    aspectRatio: "horizontal"
+  },
+  {
+    id: 8,
+    title: "High-Quality Content Edit",
+    category: "Talking Head Video",
+    thumbnail: "/assets/thumbnails/10k_final.jpeg",
+    videoUrl: "/assets/videos/10k_final.mp4",
+    description: "Editing that explains, motion that engages, and sound that completes the story.",
+    roles: ["Fast-Paced Editing", "Graphics Overlays", "Story Arc"],
+    bgClass: "bg-iman-orbital",
+    aspectRatio: "horizontal"
   }
 ];
 
@@ -96,11 +139,11 @@ const processSteps = [
 ];
 
 const mailSubject = encodeURIComponent("Project Inquiry: [Your Brand/Project Name]");
-const mailBody = encodeURIComponent("Hi Hariom,\n\nI'm reaching out after seeing your portfolio. I'd love to discuss a potential video project with you.\n\nProject Details:\n- Content Type (Reels/Ad/YouTube):\n- Estimated Footage Length:\n- Desired Deadline:\n\nLooking forward to your response!");
+const mailBody = encodeURIComponent("Hi Hariom,\n\nI'm reaching out after seeing your portfolio. I'd love to discuss a potential video project with you.\n\nLooking forward to your response!");
 const mailLink = `mailto:editnomecreates07@outlook.com?subject=${mailSubject}&body=${mailBody}`;
 
 const Index = () => {
-  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
+  const [selectedProject, setSelectedProject] = useState<any | null>(null);
 
   return (
     <div className="min-h-screen bg-transparent cursor-default">
@@ -156,29 +199,57 @@ const Index = () => {
 
       <Marquee />
 
-      {/* Portfolio Section */}
+      {/* Short Form Portfolio Section */}
       <section id="portfolio" className="py-32 bg-transparent relative">
         <div className="container mx-auto px-6">
           <div className="text-center mb-20">
-            <p className="text-primary text-sm font-bold tracking-[0.4em] uppercase mb-4">Selected Works</p>
+            <p className="text-primary text-sm font-bold tracking-[0.4em] uppercase mb-4">Social Media</p>
             <div className="overflow-hidden">
-               <h2 className="font-display text-4xl md:text-6xl font-semibold animate-reveal-up">Motion Gallery</h2>
+               <h2 className="font-display text-4xl md:text-6xl font-semibold animate-reveal-up">Short-Form Mastery</h2>
             </div>
           </div>
       
-          <div className="flex flex-wrap justify-center gap-4 md:gap-8">
-            {projects.map((project, index) => (
-              <div key={project.id} className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]">
-                <ProjectCard
-                  title={project.title}
-                  category={project.category}
-                  thumbnail={project.thumbnail}
-                  videoUrl={project.videoUrl} 
-                  onClick={() => setSelectedProject(project)}
-                  index={index}
-                  bgClass={project.bgClass}
-                />
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {shortFormProjects.map((project, index) => (
+              <ProjectCard
+                key={project.id}
+                title={project.title}
+                category={project.category}
+                thumbnail={project.thumbnail}
+                videoUrl={project.videoUrl} 
+                onClick={() => setSelectedProject(project)}
+                index={index}
+                bgClass={project.bgClass}
+                aspectRatio="vertical"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Long Form Portfolio Section */}
+      <section className="py-32 bg-black/10 border-y border-white/5 relative">
+        <div className="container mx-auto px-6">
+          <div className="text-right mb-20">
+            <p className="text-primary text-sm font-bold tracking-[0.4em] uppercase mb-4">Long Form</p>
+            <div className="overflow-hidden">
+               <h2 className="font-display text-4xl md:text-6xl font-semibold animate-reveal-up">Cinematic Narratives</h2>
+            </div>
+          </div>
+      
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {longFormProjects.map((project, index) => (
+              <ProjectCard
+                key={project.id}
+                title={project.title}
+                category={project.category}
+                thumbnail={project.thumbnail}
+                videoUrl={project.videoUrl} 
+                onClick={() => setSelectedProject(project)}
+                index={index}
+                bgClass={project.bgClass}
+                aspectRatio="horizontal"
+              />
             ))}
           </div>
         </div>
@@ -274,11 +345,11 @@ const Index = () => {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             
-            {/* NEW PHOTO DESIGN: Editor UI & Sliding Layers (No tilt) */}
+            {/* PHOTO DESIGN: Editor UI & Sliding Layers */}
             <div className="relative opacity-0 animate-slide-in-left lg:sticky lg:top-24 pt-4 pl-4">
               <div className="relative aspect-[4/5] max-w-sm mx-auto group">
                 
-                {/* Layer 1: Sliding Grid Background (Moves out on hover) */}
+                {/* Layer 1: Sliding Grid Background */}
                 <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-xl border border-primary/30 bg-black/80 transition-transform duration-500 ease-out group-hover:translate-x-6 group-hover:translate-y-6">
                     <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at center, hsl(var(--crimson)) 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
                 </div>
@@ -287,45 +358,28 @@ const Index = () => {
                 <div className="relative h-full w-full rounded-xl overflow-hidden border border-white/10 bg-black shadow-2xl transition-transform duration-500 ease-out group-hover:-translate-x-2 group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_-15px_rgba(220,20,60,0.2)]">
 
                   {/* Bottom Xiaomi/Leica Watermark Bar */}
-<div className="absolute bottom-0 left-0 w-full h-12 md:h-14 bg-black/20 backdrop-blur-sm translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0 z-30 border-t border-white/5 flex items-center justify-between px-3 md:px-5">                      {/* Left: Device Name */}
+                  <div className="absolute bottom-0 left-0 w-full h-12 md:h-14 bg-black/20 backdrop-blur-sm translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0 z-30 border-t border-white/5 flex items-center justify-between px-3 md:px-5">
                       <span className="font-sans font-bold text-xs md:text-sm tracking-wide text-white">
                         xiaomi 15 Ultra
                       </span>
                       
-                      {/* Right: Leica Badge + Camera Specs */}
                       <div className="flex items-center gap-2 md:gap-3">
-                          {/* Leica Badge (CSS Replica) */}
                           <div className="bg-[#e2001a] flex items-center justify-center rounded-full w-6 h-6 md:w-8 md:h-8 shadow-inner">
                               <span className="text-white text-[6px] md:text-[8px] font-serif font-bold italic tracking-wider">Leica</span>
                           </div>
-                          
-                          {/* Vertical Divider */}
                           <div className="w-[1px] h-4 md:h-5 bg-white/20"></div>
-                          
-                          {/* Camera EXIF Data */}
                           <span className="font-sans text-[9px] md:text-[11px] text-white font-medium tracking-wide">
                             100mm <span className="ml-1 md:ml-2">f/2.6</span> <span className="ml-1 md:ml-2">1/50s</span> <span className="ml-1 md:ml-2">ISO800</span>
                           </span>
                       </div>
                   </div>
 
-                  {/* Subtle Focus Reticle in the center */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 border border-white/20 rounded-full z-20 opacity-0 transition-all duration-700 scale-150 group-hover:scale-100 group-hover:opacity-100 flex items-center justify-center pointer-events-none">
-                      <div className="w-1 h-1 bg-primary/80 rounded-full" />
-                      <div className="absolute top-0 w-[1px] h-2 bg-white/40" />
-                      <div className="absolute bottom-0 w-[1px] h-2 bg-white/40" />
-                      <div className="absolute left-0 w-2 h-[1px] bg-white/40" />
-                      <div className="absolute right-0 w-2 h-[1px] bg-white/40" />
-                  </div>
-
-                  {/* The Image (Starts slightly moody, blooms into vibrant color on hover) */}
                   <img
                     src="/assets/hariom.jpg"
                     alt="Hariom - Professional video editor"
                     className="w-full h-full object-cover transition-all duration-700 ease-out filter grayscale-[30%] contrast-110 group-hover:grayscale-0 group-hover:contrast-100 group-hover:scale-105"
                   />
                   
-                  {/* Bottom fade gradient to ground the image (hidden when watermark slides in) */}
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-0" />
                 </div>
               </div>
@@ -343,10 +397,10 @@ const Index = () => {
                 </div>
                 <div className="space-y-4 text-muted-foreground leading-relaxed mb-8">
                     <p>
-                    With 1.5 years in the field, I help brands and creators transform raw footage into high-impact visual stories.
+                      A Video Editor with 1.5 years of experience, and I love turning raw clips into powerful, can't-look-away stories that truly connect
                     </p>
                     <p>
-                    I specialize in cinematic color grading and dynamic motion graphics designed to elevate content from ordinary to extraordinary.
+                      I don't just edit to make things look good — I edit to make people feel something. From YouTube videos to short-form reels, I focus on crafting content that boosts engagement and helps creators shape a brand that stands out. Let's make something unforgettable.
                     </p>
                 </div>
                 <a href={mailLink}>

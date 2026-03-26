@@ -11,7 +11,6 @@ const Marquee = () => {
   const items = [
     { name: "Adobe Premiere", icon: Video },
     { name: "After Effects", icon: Layers },
-    { name: "DaVinci Resolve", icon: Aperture },
     { name: "Sound Design", icon: MonitorPlay },
     { name: "Color Grading", icon: Wand2 },
     { name: "Visual Effects", icon: Clapperboard },
